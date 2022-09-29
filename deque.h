@@ -1,4 +1,5 @@
 #include <stdlib.h>
+
 typedef int _typesymbol ;
 enum e_order {
 	Ascending,
@@ -13,11 +14,12 @@ typedef struct s_typesymbol_order {
 typedef struct s_deque_typesymbol {
 	int			top;
 	int			rear;
-	size_t		size;
+	int			capa;
 	_typesymbol	*deque;
 } t_deque_typesymbol;
 
-void	ft_deque_typesymbol_push_back(t_deque_typesymbol *self);
-void	ft_deque_typesymbol_push_front(t_deque_typesymbol *self);
-void	ft_deque_typesymbol_pop_back(t_deque_typesymbol *self);
-void	ft_deque_typesymbol_pop_front(t_deque_typesymbol *self);
+t_deque_typesymbol	*ft_deque_typesymbol_create(int size);
+void		ft_deque_typesymbol_push_back(t_deque_typesymbol *self, _typesymbol x);
+void		ft_deque_typesymbol_push_front(t_deque_typesymbol *self, _typesymbol x);
+_typesymbol	ft_deque_typesymbol_pop_back(t_deque_typesymbol *self);
+_typesymbol	ft_deque_typesymbol_pop_front(t_deque_typesymbol *self);
