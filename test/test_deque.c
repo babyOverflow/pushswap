@@ -1,71 +1,83 @@
 #include <assert.h>
 #include <stdio.h>
-#include "../deque.h"
+#include "../src/deque.h"
 
-int	test_push_back_when_size0()
-{
-	int size = 3;
-	t_deque_typesymbol	*d = ft_deque_typesymbol_create(size);
-	assert(d->rear == 0);
-	assert(d->top == 0);
-	assert(d->capa == size);
-
-	ft_deque_typesymbol_push_back(d, 1);
-	assert(d->deque[0] == 1);
-	assert(d->rear == 0);
-	assert(d->top == 1);
-	ft_deque_typesymbol_push_front(d, 2);
-	assert(d->deque[size - 1] == 2);
-	assert(d->rear == size - 1);
-	free(d);
-	return (0);
-}
-
-int	test_push_front_when_size0()
-{
-	int size = 3;
-	t_deque_typesymbol	*d = ft_deque_typesymbol_create(size);
-	assert(d->rear == 0);
-	assert(d->top == 0);
-	assert(d->capa == size);
-
-	ft_deque_typesymbol_push_front(d, 1);
-	assert(d->deque[0] == 1);
-	assert(d->top == 0);
-	assert(d->rear == size - 1);
-	ft_deque_typesymbol_push_back(d, 2);
-	assert(d->deque[1] == 2);
-	free(d);
-	return (0);
-}
-
-int	test_push_back_until_full()
-{
-	int	size = 4;
-	t_deque_typesymbol *d = ft_deque_typesymbol_create(size);
-	assert(d->top == 0);
-	assert(d->rear == 0);
-	return (0);
-}
-
-int	test_push_loop()
+int	test_push_back()
 {
 	int size = 4;
-	t_deque_typesymbol *d = ft_deque_typesymbol_create(size);
-	for (int i = 0; i < size; i++)
-		ft_deque_typesymbol_push_back(d, 1);
-	for (int i = 0; i < size; i++)
-		assert(d->deque[i] == 1);
-	int x = ft_deque_typesymbol_pop_front(d);
-	assert(x == 1);
-	ft_deque_typesymbol_push_back(d, 2);
+	t_deque_typesymbol d = ft_deque_typesymbol_create(size);
+
+	ft_deque_typesymbol_push_back(&d, 1);
+	ft_deque_typesymbol_push_back(&d, 2);
+	ft_deque_typesymbol_push_back(&d, 3);
+	assert(3 == ft_deque_typesymbol_pop_back(&d));
+	assert(2 == ft_deque_typesymbol_pop_back(&d));
+	assert(1 == ft_deque_typesymbol_pop_back(&d));
+	ft_deque_typesymbol_push_back(&d, 1);
+	ft_deque_typesymbol_push_back(&d, 2);
+	ft_deque_typesymbol_push_back(&d, 3);
+	assert(1 == ft_deque_typesymbol_pop_front(&d));
+	assert(2 == ft_deque_typesymbol_pop_front(&d));
+	assert(3 == ft_deque_typesymbol_pop_front(&d));
+	ft_deque_typesymbol_push_back(&d, 4);
+	ft_deque_typesymbol_push_back(&d, 5);
+	assert(5 == ft_deque_typesymbol_pop_back(&d));
+	assert(4 == ft_deque_typesymbol_pop_back(&d));
+	ft_deque_typesymbol_push_back(&d, 4);
+	ft_deque_typesymbol_push_back(&d, 5);
+	ft_deque_typesymbol_push_back(&d, 6);
+	assert(4 == ft_deque_typesymbol_pop_front(&d));
+	assert(5 == ft_deque_typesymbol_pop_front(&d));
+	assert(6 == ft_deque_typesymbol_pop_back(&d));
+	return (0);
+}
+
+int	test_push_front()
+{
+	int size = 4;
+	t_deque_typesymbol d = ft_deque_typesymbol_create(size);
+
+	ft_deque_typesymbol_push_front(&d, 1);
+	ft_deque_typesymbol_push_front(&d, 2);
+	ft_deque_typesymbol_push_front(&d, 3);
+	assert(1 == ft_deque_typesymbol_pop_back(&d));
+	assert(2 == ft_deque_typesymbol_pop_back(&d));
+	assert(3 == ft_deque_typesymbol_pop_back(&d));
+	ft_deque_typesymbol_push_front(&d, 1);
+	ft_deque_typesymbol_push_front(&d, 2);
+	ft_deque_typesymbol_push_front(&d, 3);
+	assert(3 == ft_deque_typesymbol_pop_front(&d));
+	assert(2 == ft_deque_typesymbol_pop_front(&d));
+	assert(1 == ft_deque_typesymbol_pop_front(&d));
+	ft_deque_typesymbol_push_front(&d, 4);
+	ft_deque_typesymbol_push_front(&d, 5);
+	assert(4 == ft_deque_typesymbol_pop_back(&d));
+	assert(5 == ft_deque_typesymbol_pop_back(&d));
+	ft_deque_typesymbol_push_front(&d, 4);
+	ft_deque_typesymbol_push_front(&d, 5);
+	ft_deque_typesymbol_push_front(&d, 6);
+	assert(6 == ft_deque_typesymbol_pop_front(&d));
+	assert(5 == ft_deque_typesymbol_pop_front(&d));
+	assert(4 == ft_deque_typesymbol_pop_back(&d));
+	return (0);
+}
+
+int	test_overflow()
+{
+	int size = 4;
+	t_deque_typesymbol d = ft_deque_typesymbol_create(size);
+	ft_deque_typesymbol_push_front(&d, 4);
+	ft_deque_typesymbol_push_front(&d, 5);
+	ft_deque_typesymbol_push_front(&d, 6);
+	ft_deque_typesymbol_push_front(&d, 6);
+	ft_deque_typesymbol_push_front(&d, 6);
+
 	return (0);
 }
 
 int main()
 {
-	test_push_loop();
-	test_push_back_when_size0();
-	test_push_front_when_size0();
-	test_push_back_until_full();
+	test_push_back();
+	test_push_front();
+	test_overflow();
 }

@@ -10,9 +10,10 @@ _typesymbol	ft_deque_typesymbol_pop_back(t_deque_typesymbol *self)
 		exit(-1);
 	}
 	ret = self->deque[--self->top];
-	if (self->top <= 0)
+	if (self->top < 0)
 	{
 		self->top = self->capa;
+		ret = self->deque[--self->top];
 	}
 	return (ret);
 }
@@ -25,8 +26,9 @@ _typesymbol	ft_deque_typesymbol_pop_front(t_deque_typesymbol *self)
 	{
 		exit(-1);
 	}
-	ret = self->deque[self->rear++];
-	if (self->rear <= self->capa)
+	ret = self->deque[self->rear];
+	self->rear++;
+	if (self->rear >= self->capa)
 	{
 		self->rear = 0;
 	}
@@ -36,22 +38,26 @@ _typesymbol	ft_deque_typesymbol_pop_front(t_deque_typesymbol *self)
 void	ft_deque_typesymbol_push_back(t_deque_typesymbol *self, _typesymbol x)
 {
 	self->deque[self->top++] = x;
-	if (self->top == self->capa)
+	if (self->top >= self->capa)
 		self->top = 0;
 }
 
 void	ft_deque_typesymbol_push_front(t_deque_typesymbol *self, _typesymbol x)
 {
+	if (--self->rear < 0)
+		self->rear = self->capa - 1;
+	self->deque[self->rear] = x;
 }
 
-t_deque_typesymbol	*ft_deque_typesymbol_create(int size)
+t_deque_typesymbol	ft_deque_typesymbol_create(int size)
 {
-	t_deque_typesymbol	*self;
+	t_deque_typesymbol	self;
 	
-	self = (t_deque_typesymbol *) malloc(sizeof(t_deque_typesymbol));
-	self->deque = (_typesymbol *)malloc(sizeof(_typesymbol) * size);
-	self->capa = size;
-	self->rear = 0;
-	self->top = 0;
+	self.deque = (_typesymbol *)malloc(sizeof(_typesymbol) * size);
+	if (self.deque == NULL)
+		exit(-1);
+	self.capa = size;
+	self.rear = 0;
+	self.top = 0;
 	return (self);
 }
