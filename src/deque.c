@@ -1,4 +1,5 @@
-#include "deque.h"
+#include <stdlib.h>
+#include "push_swap.h"
 #include <sys/stdio.h>
 
 _typesymbol	ft_deque_typesymbol_pop_back(t_deque_typesymbol *self)

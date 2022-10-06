@@ -83,18 +83,3 @@ t_parsed_num	ps_parse(int ac, char *av[])
 	}
 	return ((t_parsed_num){ret, numbers});
 }
-
-int	main(int ac, char *av[])
-{
-	int				i;
-	t_parsed_num	numbers;
-
-	if (ac < 1)
-		return 0;
-	numbers = ps_parse(ac, av);
-	i = 0;
-	while (i < numbers.len)
-	{
-		printf("%d\n", numbers.arr[i++]);
-	}
-}

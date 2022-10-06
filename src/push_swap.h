@@ -1,22 +1,24 @@
 #include <stdlib.h>
 
-typedef int _typesymbol ;
 enum e_order {
-	Ascending,
-	Descending
+	Ascending = 0,
+	Descending = 1,
+	None
 };
 
-typedef struct s_typesymbol_order {
-	_typesymbol		value;
-	enum e_order	order;
-} t_typesymbol_order;
+typedef struct s_ord_int {
+	int				value;
+	enum e_order	ord;
+}	t_ord_int;
+
+typedef t_ord_int _typesymbol;
 
 typedef struct s_deque_typesymbol {
 	int			top;
 	int			rear;
 	int			capa;
 	_typesymbol	*deque;
-} t_deque_typesymbol;
+}	t_deque_typesymbol;
 
 t_deque_typesymbol	ft_deque_typesymbol_create(int size);
 void		ft_deque_typesymbol_push_back(t_deque_typesymbol *self, _typesymbol x);
