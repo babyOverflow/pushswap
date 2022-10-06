@@ -6,9 +6,15 @@ enum e_order {
 	None
 };
 
-typedef struct s_ord_int {
-	int				value;
+typedef struct s_run {
 	enum e_order	ord;
+	int				size;
+	int				id;
+}	t_run;
+
+typedef struct s_ord_int {
+	int		value;
+	t_run	*run;
 }	t_ord_int;
 
 typedef t_ord_int _typesymbol;

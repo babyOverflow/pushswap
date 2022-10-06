@@ -11,6 +11,28 @@
 #define AAD 0b001 // 1
 #define AAA 0b000 // 0
 
+t_run	*nums_to_ord_int_stack(t_parsed_num *nums, t_deque_typesymbol *stack)
+{
+	int				i;
+	int				id;
+	int				prev;
+	static t_run	*runs;
+	
+	if (runs != NULL)
+		free(runs);
+	
+	runs = (t_run *)malloc(sizeof(t_run) * nums->len);
+	id = 0;
+	i = -1;
+	if (nums->arr[0] < nums->arr[1])
+		runs[id].ord = Descending;
+	while (++i < nums->len)
+	{
+	}
+	return (runs);
+}
+
+
 int	main(int ac, char *av[])
 {
 	int					i;
@@ -27,20 +49,9 @@ int	main(int ac, char *av[])
 	int prev = numbers.arr[i];
 	while (i < numbers.len)
 	{
-		enum e_order e = prev > numbers.arr[i] ? Descending : Ascending;
 		prev = numbers.arr[i];
 		ft_deque_typesymbol_push_back(
 			&a_stack,
-			(_typesymbol){numbers.arr[i++], e});
-	}
-	while (a_stack.top - a_stack.rear != 0)
-	{
-		int	checksum = 0;
-		checksum = a_stack.deque[a_stack.top].ord << 3;
-		checksum += b_stack.deque[b_stack.top].ord << 2;
-		checksum += a_stack.deque[a_stack.rear].ord << 1;
-		t_ord_int temp = ft_deque_typesymbol_pop_front(&a_stack);
-		printf("%d, %d, %o\n", temp.value, temp.ord, checksum);
-		ft_deque_typesymbol_push_back(&b_stack, temp);
+			(_typesymbol){numbers.arr[i++], });
 	}
 }
