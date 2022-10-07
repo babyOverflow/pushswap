@@ -11,25 +11,49 @@
 #define AAD 0b001 // 1
 #define AAA 0b000 // 0
 
-t_run	*nums_to_ord_int_stack(t_parsed_num *nums, t_deque_typesymbol *stack)
+enum e_order	compare(int x, int y)
+{
+	if (x < y)
+		return (Ascending);
+	else
+		return (Descending);
+}
+
+t_ord_desc	*nums_to_ord_int_stack(
+	t_parsed_num *nums,
+	t_deque_typesymbol *stack
+)
 {
 	int				i;
 	int				id;
-	int				prev;
-	static t_run	*runs;
+	t_ord_desc		*descs;
 	
-	if (runs != NULL)
-		free(runs);
-	
-	runs = (t_run *)malloc(sizeof(t_run) * nums->len);
+	descs = (t_ord_desc *)malloc(sizeof(t_ord_desc) * (nums->len / 2 + 1));
 	id = 0;
 	i = -1;
-	if (nums->arr[0] < nums->arr[1])
-		runs[id].ord = Descending;
-	while (++i < nums->len)
+	while (++i < nums->len - 1)
 	{
+		enum e_order	o_orign = compare(nums->arr[i], nums->arr[i + 1]);
+		++id;
+		descs[id].id = id;
+		descs[id].size = 1;
+		descs[id].ord = o_orign;
+		while (i < nums->len)
+		{
+			enum e_order o_crnt = compare(nums->arr[i], nums->arr[i + 1]);
+			ft_deque_typesymbol_push_back(
+				stack,
+				(_typesymbol){
+					nums->arr[i],
+					&descs[id]
+				});
+			descs[id].size++;
+			if (o_orign != o_crnt)
+				break ;
+			i++;
+		}
 	}
-	return (runs);
+	return (descs);
 }
 
 
@@ -47,11 +71,11 @@ int	main(int ac, char *av[])
 	b_stack = ft_deque_typesymbol_create(numbers.len + 1);
 	i = 0;
 	int prev = numbers.arr[i];
-	while (i < numbers.len)
+	t_ord_desc	*descs = nums_to_ord_int_stack(&numbers, &a_stack);
+	i = -1;
+	while (++i < numbers.len)
 	{
-		prev = numbers.arr[i];
-		ft_deque_typesymbol_push_back(
-			&a_stack,
-			(_typesymbol){numbers.arr[i++], });
+		t_ord_int	n = ft_deque_typesymbol_pop_front(&a_stack);
+		printf("%d %d\n", n.value, n.ord->id);
 	}
 }
