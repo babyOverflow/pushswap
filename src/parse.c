@@ -42,7 +42,7 @@ static int	_ft_assign_num(int *numbers, int len, char *strs[])
 	i = 0;
 	while (strs[i] != NULL)
 	{
-		if(is_valid_num(strs[i]))	
+		if (is_valid_num(strs[i]))
 		{
 			numbers[i] = ft_atoi(strs[i]);
 			j = i;
@@ -66,13 +66,12 @@ t_parsed_num	ps_parse(int ac, char *av[])
 	int		check_num;
 
 	ret = 0;
-	i = 1;
+	i = 0;
 	temp = malloc(sizeof(char **) * ac);
-	while (i < ac)
+	while (++i < ac)
 	{
 		temp[i] = ft_split(av[i], ' ');
 		ret += _ft_strvlen(temp[i]);
-		++i;
 	}
 	numbers = malloc(sizeof(int) * (ret + 1));
 	check_num = 1;
