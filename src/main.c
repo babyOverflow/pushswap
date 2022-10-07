@@ -48,9 +48,9 @@ t_ord_desc	*nums_to_ord_int_stack(
 				(_typesymbol){nums->arr[i], &descs[id]}
 				);
 			descs[id].size++;
-			if (o_orign != o_crnt)
-				break ;
 			i++;
+			if (o_orign != o_crnt && i != nums->len - 1)
+				break ;
 		}
 	}
 	return (descs);
@@ -76,6 +76,6 @@ int	main(int ac, char *av[])
 	while (++i < numbers.len)
 	{
 		n = ft_deque_typesymbol_pop_front(&a_stack);
-		printf("%d %d\n", n.value, n.ord->id);
+		printf("%d %d\n", n.value, n.ord->ord);
 	}
 }
