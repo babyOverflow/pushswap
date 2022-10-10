@@ -96,15 +96,18 @@ void	push_run(t_ps_stack *a_stack, t_ps_stack *b_stack)
 	ft_deque_run_push_back(b_stack->runs, new_run);
 }
 
-void	_create_new_run(int status, )
-
-void	merge(t_ps_stack *a_stack, t_ps_stack *b_stack, int status)
+void	merge(
+	t_ps_stack *a_stack,
+	t_ps_stack *b_stack,
+	int status,
+	int len
+)
 {
-	int 	prime_num_pos;
-	t_run	new_run;
-	int		i;
+	int			prime_num_pos;
+	const int	num_pos_status = status & 0b111;
 
-	if (status == AAA || status == AAD || status == ADD || status == DAA)
+	if (num_pos_status == AAA || num_pos_status == AAD
+		|| num_pos_status == ADD || num_pos_status == DAA)
 		prime_num_pos = ps_max_num_pos(a_stack->numbers, b_stack->numbers);
 	else
 		prime_num_pos = ps_min_num_pos(a_stack->numbers, b_stack->numbers);
@@ -123,6 +126,7 @@ void	merge(t_ps_stack *a_stack, t_ps_stack *b_stack, int status)
 		pb(a_stack->numbers, b_stack->numbers);
 		rb(a_stack->numbers, b_stack->numbers);
 	}
+	merge(a_stack, b_stack, status, len - 1);
 }
 
 void	push_swap(
