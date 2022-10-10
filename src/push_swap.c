@@ -96,6 +96,35 @@ void	push_run(t_ps_stack *a_stack, t_ps_stack *b_stack)
 	ft_deque_run_push_back(b_stack->runs, new_run);
 }
 
+void	_create_new_run(int status, )
+
+void	merge(t_ps_stack *a_stack, t_ps_stack *b_stack, int status)
+{
+	int 	prime_num_pos;
+	t_run	new_run;
+	int		i;
+
+	if (status == AAA || status == AAD || status == ADD || status == DAA)
+		prime_num_pos = ps_max_num_pos(a_stack->numbers, b_stack->numbers);
+	else
+		prime_num_pos = ps_min_num_pos(a_stack->numbers, b_stack->numbers);
+	if (prime_num_pos == A_STACK_TOP)
+	{
+		pb(a_stack->numbers, b_stack->numbers);
+		rb(a_stack->numbers, b_stack->numbers);
+	}
+	else if (prime_num_pos == B_STACK_TOP)
+	{
+		rb(a_stack->numbers, b_stack->numbers);
+	}
+	else if (prime_num_pos == A_STACK_REAR)
+	{
+		rra(a_stack->numbers, b_stack->numbers);
+		pb(a_stack->numbers, b_stack->numbers);
+		rb(a_stack->numbers, b_stack->numbers);
+	}
+}
+
 void	push_swap(
 	t_deque_typesymbol *a_nums,
 	t_deque_typesymbol *b_nums,
@@ -115,23 +144,8 @@ void	push_swap(
 		push_run(&a_stack, &b_stack);
 		return ;
 	}
-	if (status == AAA || status == AAD || status == ADD || status == DAA)
-		prime_num_pos = ps_max_num_pos(a_nums, b_nums);
 	else
-		prime_num_pos = ps_min_num_pos(a_nums, b_nums);
-	if (prime_num_pos == A_STACK_TOP)
 	{
-		pb(a_nums, b_nums);
-		rb(a_nums, b_nums);
-	}
-	else if (prime_num_pos == B_STACK_TOP)
-	{
-		rb(a_nums, b_nums);
-	}
-	else if (prime_num_pos == A_STACK_REAR)
-	{
-		rra(a_nums, b_nums);
-		pb(a_nums, b_nums);
-		rb(a_nums, b_nums);
+		merge(&a_stack, &b_stack, status);
 	}
 }
