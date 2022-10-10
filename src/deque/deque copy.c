@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include "push_swap.h"
-#include <sys/stdio.h>
 
-_typesymbol	ft_deque_typesymbol_pop_back(t_deque_typesymbol *self)
+
+t_run	ft_deque_run_pop_back(t_deque_run *self)
 {
-	_typesymbol	ret;
+	t_run	ret;
 
 	if (self->rear == self->top)
 	{
-		exit(-1);
+		return ((t_run){0, None});
 	}
 	ret = self->deque[--self->top];
 	if (self->top < 0)
@@ -19,13 +19,13 @@ _typesymbol	ft_deque_typesymbol_pop_back(t_deque_typesymbol *self)
 	return (ret);
 }
 
-_typesymbol	ft_deque_typesymbol_pop_front(t_deque_typesymbol *self)
+t_run	ft_deque_run_pop_front(t_deque_run *self)
 {
-	_typesymbol	ret;
+	t_run	ret;
 
 	if (self->rear == self->top)
 	{
-		exit(-1);
+		return ((t_run){0, None});
 	}
 	ret = self->deque[self->rear];
 	self->rear++;
@@ -36,25 +36,25 @@ _typesymbol	ft_deque_typesymbol_pop_front(t_deque_typesymbol *self)
 	return (ret);
 }
 
-void	ft_deque_typesymbol_push_back(t_deque_typesymbol *self, _typesymbol x)
+void	ft_deque_run_push_back(t_deque_run *self, t_run x)
 {
 	self->deque[self->top++] = x;
 	if (self->top >= self->capa)
 		self->top = 0;
 }
 
-void	ft_deque_typesymbol_push_front(t_deque_typesymbol *self, _typesymbol x)
+void	ft_deque_run_push_front(t_deque_run *self, t_run x)
 {
 	if (--self->rear < 0)
 		self->rear = self->capa - 1;
 	self->deque[self->rear] = x;
 }
 
-t_deque_typesymbol	ft_deque_typesymbol_create(int size)
+t_deque_run	ft_deque_run_create(int size)
 {
-	t_deque_typesymbol	self;
+	t_deque_run	self;
 	
-	self.deque = (_typesymbol *)malloc(sizeof(_typesymbol) * size);
+	self.deque = (t_run *)malloc(sizeof(t_run) * size);
 	if (self.deque == NULL)
 		exit(-1);
 	self.capa = size;

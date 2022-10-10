@@ -62,7 +62,7 @@ int	main(int ac, char *av[])
 	t_parsed_num		numbers;
 	t_deque_typesymbol	a_stack;
 	t_deque_typesymbol	b_stack;
-	t_ord_int			n; 
+	t_ord_num			n; 
 	t_ord_desc			*descs;
 
 	if (ac < 1)
@@ -73,9 +73,10 @@ int	main(int ac, char *av[])
 	i = 0;
 	descs = nums_to_ord_int_stack(&numbers, &a_stack);
 	i = -1;
+	push_swap(&a_stack, &b_stack, descs);
 	while (++i < numbers.len)
 	{
-		n = ft_deque_typesymbol_pop_front(&a_stack);
-		printf("%d %d\n", n.value, n.ord->ord);
+		n = ft_deque_typesymbol_pop_front(&b_stack);
+		printf("%d %d\n", n.num, n.ord->ord);
 	}
 }
