@@ -21,49 +21,32 @@ enum e_order	compare(int x, int y)
 
 void	nums_to_int_stack(
 	t_parsed_num *nums,
-	t_deque_typesymbol *stack,
-	t_deque_run *a_runs
+	t_ps_stack *stack
 )
 {
 	int				i;
-	enum e_order	o_orign;
 	enum e_order	o_crnt;
 	t_run			run;
 
 	i = 0;
-	o_orign = compare(nums->arr[i], nums->arr[i + 1]);
-	run = (t_run){.len = 0, .ord = o_crnt};
+	run = (t_run){.len = 0, .ord = compare(nums->arr[i], nums->arr[i + 1])};
 	while (i < nums->len)
 	{
-		o_crnt = o_orign;
-		while (o_orign == o_crnt)
+		o_crnt = run.ord;
+		while (run.ord == o_crnt)
 		{
-			o_crnt = compare(nums->arr[i], nums->arr[i + 1]);
-			ft_deque_typesymbol_push_back(stack, nums->arr[i]);
+			ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
 			++run.len;
 			if (++i == nums->len)
-				return (ft_deque_run_push_back(a_runs, run));
+				return (ft_deque_run_push_back(stack->runs, run));
+			o_crnt = compare(nums->arr[i], nums->arr[i + 1]);
 		}
-		ft_deque_run_push_back(a_runs, run);
-		ft_deque_typesymbol_push_back(stack, nums->arr[i]);
+		ft_deque_run_push_back(stack->runs, run);
+		ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
 		++i;
-		o_orign = compare(nums->arr[i], nums->arr[i + 1]);
-		run = (t_run){.len = 1, .ord = o_orign};
+		run = (t_run){1, compare(nums->arr[i], nums->arr[i + 1])};
 	}
-	ft_deque_run_push_back(a_runs, run);
-}
-
-void	loop(
-	enum e_order orign, 
-	t_deque_typesymbol *stack,
-	t_parsed_num *nums,
-	int i
-)
-{
-	enum e_order	current;
-
-	current = compare(nums->arr[i], nums->arr[i + 1]);
-	ft_deque_typesymbol_push_back(stack, nums->arr[i]);
+	ft_deque_run_push_back(stack->runs, run);
 }
 
 int	main(int ac, char *av[])
@@ -83,7 +66,7 @@ int	main(int ac, char *av[])
 	t_deque_run a_runs = ft_deque_run_create(numbers.len + 1);
 	t_deque_run b_runs = ft_deque_run_create(numbers.len + 1);
 
-	nums_to_int_stack(&numbers, &a_stack, &a_runs);
+	nums_to_int_stack(&numbers, &((t_ps_stack){&a_stack, &a_runs}));
 
 	t_run	run = ft_deque_run_peek_back(&a_runs);
 	printf("run size: %d\n", run.len);
