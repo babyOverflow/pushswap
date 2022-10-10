@@ -3,7 +3,8 @@ SRC_DIR := src
 OBJ_DIR := obj
 
 SRC := main.c parse.c parse_utils.c push_swap.c ps_commands.c \
-	deque/deque.c deque/deque_peek.c
+	deque/deque.c deque/deque_peek.c \
+	deque/deque_run.c deque/deque_run_peek.c
 
 SRC := $(SRC:%.c=$(SRC_DIR)/%.c)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

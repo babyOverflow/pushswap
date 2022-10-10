@@ -7,7 +7,7 @@ _typesymbol	ft_deque_typesymbol_pop_back(t_deque_typesymbol *self)
 
 	if (self->rear == self->top)
 	{
-		return ((t_ord_num){.ord = NULL});
+		return (0);
 	}
 	ret = self->deque[--self->top];
 	if (self->top < 0)
@@ -24,7 +24,7 @@ _typesymbol	ft_deque_typesymbol_pop_front(t_deque_typesymbol *self)
 
 	if (self->rear == self->top)
 	{
-		return ((t_ord_num){.ord = NULL});
+		return (0);
 	}
 	ret = self->deque[self->rear];
 	self->rear++;

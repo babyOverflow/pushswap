@@ -1,12 +1,12 @@
 #include "push_swap.h"
 
-_typesymbol	ft_deque_typesymbol_peek_back(t_deque_typesymbol *self)
+t_run	ft_deque_run_peek_back(t_deque_run *self)
 {
-	_typesymbol	ret;
+	t_run	ret;
 
 	if (self->rear == self->top)
 	{
-		return (0);
+		return ((t_run){0, None});
 	}
 	ret = self->deque[self->top - 1];
 	if (self->top < 0)
@@ -14,13 +14,13 @@ _typesymbol	ft_deque_typesymbol_peek_back(t_deque_typesymbol *self)
 	return (ret);
 }
 
-_typesymbol	ft_deque_typesymbol_peek_front(t_deque_typesymbol *self)
+t_run	ft_deque_run_peek_front(t_deque_run *self)
 {
-	_typesymbol	ret;
+	t_run	ret;
 
 	if (self->rear == self->top)
 	{
-		return (0);
+		return ((t_run){0, None});
 	}
 	ret = self->deque[self->rear];
 	return (ret);

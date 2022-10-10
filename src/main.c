@@ -19,41 +19,33 @@ enum e_order	compare(int x, int y)
 		return (Descending);
 }
 
-t_ord_desc	*nums_to_ord_int_stack(
+void	nums_to_int_stack(
 	t_parsed_num *nums,
-	t_deque_typesymbol *stack
+	t_deque_typesymbol *stack,
+	t_deque_run *a_runs
 )
 {
 	int				i;
-	int				id;
-	t_ord_desc		*descs;
 	enum e_order	o_orign;
 	enum e_order	o_crnt;
+	t_run			run;
 
-	descs = (t_ord_desc *)malloc(sizeof(t_ord_desc) * (nums->len / 2 + 1));
-	id = 0;
 	i = -1;
 	while (++i < nums->len - 1)
 	{
 		o_orign = compare(nums->arr[i], nums->arr[i + 1]);
-		++id;
-		descs[id].id = id;
-		descs[id].size = 1;
-		descs[id].ord = o_orign;
+		run = (t_run){.len = 0, .ord = o_orign};
 		while (i < nums->len)
 		{
 			o_crnt = compare(nums->arr[i], nums->arr[i + 1]);
-			ft_deque_typesymbol_push_back(
-				stack,
-				(_typesymbol){nums->arr[i], &descs[id]}
-				);
-			descs[id].size++;
+			ft_deque_typesymbol_push_back(stack, nums->arr[i]);
 			i++;
+			++run.len;
 			if (o_orign != o_crnt && i != nums->len - 1)
 				break ;
 		}
+		ft_deque_run_push_back(a_runs, run);
 	}
-	return (descs);
 }
 
 int	main(int ac, char *av[])
@@ -62,21 +54,21 @@ int	main(int ac, char *av[])
 	t_parsed_num		numbers;
 	t_deque_typesymbol	a_stack;
 	t_deque_typesymbol	b_stack;
-	t_ord_num			n; 
-	t_ord_desc			*descs;
+	int			n; 
 
 	if (ac < 1)
 		return (0);
 	numbers = ps_parse(ac, av);
 	a_stack = ft_deque_typesymbol_create(numbers.len + 1);
 	b_stack = ft_deque_typesymbol_create(numbers.len + 1);
-	i = 0;
-	descs = nums_to_ord_int_stack(&numbers, &a_stack);
+	t_deque_run a_runs = ft_deque_run_create(numbers.len + 1);
+	t_deque_run b_runs = ft_deque_run_create(numbers.len + 1);
+	nums_to_int_stack(&numbers, &a_stack, &a_runs);
 	i = -1;
-	push_swap(&a_stack, &b_stack, descs);
+	push_swap(&a_stack, &b_stack, &a_runs, &b_runs);
 	while (++i < numbers.len)
 	{
 		n = ft_deque_typesymbol_pop_front(&b_stack);
-		printf("%d %d\n", n.num, n.ord->ord);
+		printf("%d \n", n);
 	}
 }
