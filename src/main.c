@@ -28,23 +28,23 @@ void	nums_to_int_stack(
 	enum e_order	o_crnt;
 	t_run			run;
 
-	i = 0;
-	run = (t_run){.len = 0, .ord = compare(nums->arr[i], nums->arr[i + 1])};
-	while (i < nums->len)
+	i = nums->len - 1;
+	run = (t_run){.len = 0, .ord = compare(nums->arr[i - 1], nums->arr[i])};
+	while (i >= 0)
 	{
 		o_crnt = run.ord;
 		while (run.ord == o_crnt)
 		{
 			ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
 			++run.len;
-			if (++i == nums->len)
+			if (--i <= 0)
 				return (ft_deque_run_push_back(stack->runs, run));
-			o_crnt = compare(nums->arr[i], nums->arr[i + 1]);
+			o_crnt = compare(nums->arr[i - 1], nums->arr[i]);
 		}
 		ft_deque_run_push_back(stack->runs, run);
 		ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
-		++i;
-		run = (t_run){1, compare(nums->arr[i], nums->arr[i + 1])};
+		--i;
+		run = (t_run){1, compare(nums->arr[i - 1], nums->arr[i])};
 	}
 	ft_deque_run_push_back(stack->runs, run);
 }
