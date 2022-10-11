@@ -1,4 +1,5 @@
 #include "push_swap.h"
+#include <assert.h>
 
 #define AAA 0b000
 #define AAD 0b001 
@@ -96,6 +97,8 @@ void	push_run(t_ps_stack *a_stack, t_ps_stack *b_stack)
 	ft_deque_run_push_back(b_stack->runs, new_run);
 }
 
+#define NUM_POS_MASK 0b111
+
 void	merge(
 	t_ps_stack *a_stack,
 	t_ps_stack *b_stack,
@@ -104,7 +107,7 @@ void	merge(
 )
 {
 	int			prime_num_pos;
-	const int	num_pos_status = status & 0b111;
+	const int	num_pos_status = status & NUM_POS_MASK;
 
 	if (num_pos_status == AAA || num_pos_status == AAD
 		|| num_pos_status == ADD || num_pos_status == DAA)
@@ -126,7 +129,48 @@ void	merge(
 		pb(a_stack->numbers, b_stack->numbers);
 		rb(a_stack->numbers, b_stack->numbers);
 	}
+	else {
+		assert(0);
+	}
+
 	merge(a_stack, b_stack, status, len - 1);
+}
+
+t_run	merge_run(
+	t_ps_stack *a_stack,
+	t_ps_stack *b_stack,
+	int status
+)
+{
+	t_run		ret;
+	const int	num_pos_status = status & NUM_POS_MASK;
+
+	if (num_pos_status == AAA || num_pos_status == AAD
+		|| num_pos_status == ADD || num_pos_status == DAA)
+		ret.ord = Ascending;
+	else
+		ret.ord = Descending;
+	if (num_pos_status == AAA || num_pos_status == DDD)
+	{
+		ret.len = ft_deque_run_pop_back(a_stack->runs).len + 
+			ft_deque_run_pop_back(b_stack->runs).len;
+	}
+	else if (num_pos_status == AAD || num_pos_status == DDA)
+	{
+		ret.len = ft_deque_run_pop_back(a_stack->runs).len + 
+			ft_deque_run_pop_back(b_stack->runs).len +
+			ft_deque_run_pop_front(a_stack->runs).len;
+	}
+	else if (num_pos_status == ADA || num_pos_status == DAD)
+	{
+		ret.len = ft_deque_run_pop_back(b_stack->runs).len +
+			ft_deque_run_pop_front(a_stack->runs).len;
+	}
+	else {
+		ret.len = ft_deque_run_pop_back(a_stack->runs).len +
+			ft_deque_run_pop_front(a_stack->runs).len;
+	}
+	return (ret);
 }
 
 void	push_swap(
@@ -141,6 +185,7 @@ void	push_swap(
 	int	i;
 	t_ps_stack	a_stack = {a_nums, a_runs};
 	t_ps_stack	b_stack = {b_nums, b_runs};
+	t_run	new_run;
 
 	status = ps_status(a_runs, b_runs);
 	if (status & EMPTY)
@@ -150,6 +195,8 @@ void	push_swap(
 	}
 	else
 	{
-		merge(&a_stack, &b_stack, status);
+		new_run = merge_run(&a_stack, &b_stack, status);
+		ft_deque_run_push_back(b_stack.runs, new_run);
+		merge(&a_stack, &b_stack, status, new_run.len);
 	}
 }
