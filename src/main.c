@@ -37,7 +37,7 @@ void	nums_to_int_stack(
 		{
 			ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
 			++run.len;
-			if (--i <= 0)
+			if (--i < 0)
 				return (ft_deque_run_push_back(stack->runs, run));
 			o_crnt = compare(nums->arr[i - 1], nums->arr[i]);
 		}
@@ -60,18 +60,17 @@ int	main(int ac, char *av[])
 	if (ac < 1)
 		return (0);
 	numbers = ps_parse(ac, av);
-	a_stack = ft_deque_typesymbol_create(numbers.len + 1);
-	b_stack = ft_deque_typesymbol_create(numbers.len + 1);
+	a_stack = ft_deque_typesymbol_create(numbers.len + 2);
+	b_stack = ft_deque_typesymbol_create(numbers.len + 2);
 
 	t_deque_run a_runs = ft_deque_run_create(numbers.len + 1);
 	t_deque_run b_runs = ft_deque_run_create(numbers.len + 1);
 
 	nums_to_int_stack(&numbers, &((t_ps_stack){&a_stack, &a_runs}));
 
-	t_run	run = ft_deque_run_peek_back(&a_runs);
-	printf("run size: %d\n", run.len);
 
 	i = -1;
+	push_swap(&a_stack, &b_stack, &a_runs, &b_runs);
 	push_swap(&a_stack, &b_stack, &a_runs, &b_runs);
 	while (++i < numbers.len)
 	{

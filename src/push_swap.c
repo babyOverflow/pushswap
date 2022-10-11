@@ -1,5 +1,8 @@
-#include "push_swap.h"
 #include <assert.h>
+#include <limits.h>
+
+#include "push_swap.h"
+#include "libft.h"
 
 #define AAA 0b000
 #define AAD 0b001 
@@ -41,42 +44,57 @@ int	ps_status(
 
 enum e_ps_prime_num_pos	ps_max_num_pos(
 	t_deque_typesymbol *a_stack,
-	t_deque_typesymbol *b_stack
+	t_deque_typesymbol *b_stack,
+	int	status
 )
 {
-	const int	a_top = a_stack->deque[a_stack->top - 1];
-	const int	b_top = b_stack->deque[b_stack->top - 1];
-	const int	a_rear = a_stack->deque[a_stack->rear];
+	enum e_ps_prime_num_pos	ret;
+	const int	a_top = ft_deque_typesymbol_peek_back(a_stack);
+	const int	b_top = ft_deque_typesymbol_peek_back(b_stack);
+	const int	a_rear = ft_deque_typesymbol_peek_front(a_stack);
+	int			max_num;
 
-	if (a_top >= b_top && a_top >= a_rear)
-		return (A_STACK_TOP);
-	else if (b_top >= a_top && b_top >= a_rear)
-		return (B_STACK_TOP);
+	max_num = INT_MIN;
+	if (status == AAA || status == AAD || status == ADD)
+		if (a_top > max_num)
+			max_num = a_top;
+	if (status == AAA || status == AAD || status == DAD)
+		if (b_top > max_num)
+			max_num = b_top;
+	if (status == AAD || status == ADD || status == DAD)
+		if (a_rear > max_num)
+			max_num = a_rear;
+	if (max_num == a_top)
+		ret = A_STACK_TOP;
+	else if (max_num == b_top)
+		ret = B_STACK_TOP;
 	else
-		return (A_STACK_REAR);
+		ret = A_STACK_REAR;
+	return (ret);
 }
 
 enum e_ps_prime_num_pos	ps_min_num_pos(
 	t_deque_typesymbol *a_stack,
-	t_deque_typesymbol *b_stack
+	t_deque_typesymbol *b_stack,
+	int	status
 )
 {
-	const int	a_top = ft_deque_typesymbol_peek_back(a_stack);
-	const int	b_top = ft_deque_typesymbol_peek_back(b_stack);
-	const int	a_rear = ft_deque_typesymbol_peek_front(a_stack);
+	enum e_ps_prime_num_pos	ret;
+	const int				a_top = ft_deque_typesymbol_peek_back(a_stack);
+	const int				b_top = ft_deque_typesymbol_peek_back(b_stack);
+	const int				a_rear = ft_deque_typesymbol_peek_front(a_stack);
 
-	if (a_top <= b_top && a_top <= a_rear)
-		return (A_STACK_TOP);
-	else if (b_top <= a_top && b_top <= a_rear)
-		return (B_STACK_TOP);
-	else
-		return (A_STACK_REAR);
+	ret = (A_STACK_TOP);
+	if (b_top <= a_top && b_top <= a_rear)
+		ret = (B_STACK_TOP);
+	else if (status == AAD)
+		ret = (A_STACK_REAR);
+	return (ret);
 }
 
 void	push_run(t_ps_stack *a_stack, t_ps_stack *b_stack)
 {
 	t_run	new_run;
-	int		temp_num;
 	int		i;
 
 	new_run = ft_deque_run_pop_back(a_stack->runs);
@@ -84,8 +102,7 @@ void	push_run(t_ps_stack *a_stack, t_ps_stack *b_stack)
 	i = -1;
 	while (++i < new_run.len)
 	{
-		temp_num = ft_deque_typesymbol_pop_back(a_stack->numbers);
-		ft_deque_typesymbol_push_back(b_stack->numbers, temp_num);
+		pb(a_stack->numbers, b_stack->numbers);
 	}
 	ft_deque_run_push_back(b_stack->runs, new_run);
 }
@@ -102,11 +119,15 @@ void	merge(
 	int			prime_num_pos;
 	const int	num_pos_status = status & NUM_POS_MASK;
 
+	if (len <= 0)
+		return ;
 	if (num_pos_status == AAA || num_pos_status == AAD
 		|| num_pos_status == ADD || num_pos_status == DAA)
-		prime_num_pos = ps_max_num_pos(a_stack->numbers, b_stack->numbers);
+		prime_num_pos = ps_max_num_pos(
+			a_stack->numbers, b_stack->numbers, num_pos_status);
 	else
-		prime_num_pos = ps_min_num_pos(a_stack->numbers, b_stack->numbers);
+		prime_num_pos = ps_min_num_pos(
+			a_stack->numbers, b_stack->numbers, num_pos_status);
 	if (prime_num_pos == A_STACK_TOP)
 	{
 		pb(a_stack->numbers, b_stack->numbers);
@@ -125,7 +146,6 @@ void	merge(
 	else {
 		assert(0);
 	}
-
 	merge(a_stack, b_stack, status, len - 1);
 }
 
