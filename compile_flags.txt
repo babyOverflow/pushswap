@@ -1,2 +1,5 @@
 -I./
 -I./src
+-Wall
+-Wextra
+-Werror

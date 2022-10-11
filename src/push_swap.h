@@ -27,6 +27,12 @@ typedef struct s_deque_run {
 	t_run	*deque;
 }	t_deque_run;
 
+typedef struct s_ps_stack {
+	t_deque_typesymbol	*numbers;
+	t_deque_run			*runs;
+}	t_ps_stack;
+
+
 t_deque_typesymbol	ft_deque_typesymbol_create(int size);
 void		ft_deque_typesymbol_push_back(t_deque_typesymbol *self, _typesymbol x);
 void		ft_deque_typesymbol_push_front(t_deque_typesymbol *self, _typesymbol x);

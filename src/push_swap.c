@@ -75,11 +75,6 @@ enum e_ps_prime_num_pos	ps_min_num_pos(
 		return (A_STACK_REAR);
 }
 
-typedef struct s_ps_stack {
-	t_deque_typesymbol	*numbers;
-	t_deque_run			*runs;
-}	t_ps_stack;
-
 void	push_run(t_ps_stack *a_stack, t_ps_stack *b_stack)
 {
 	t_run	new_run;
