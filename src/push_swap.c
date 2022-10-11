@@ -47,7 +47,6 @@ enum e_ps_prime_num_pos	ps_max_num_pos(
 	const int	a_top = a_stack->deque[a_stack->top - 1];
 	const int	b_top = b_stack->deque[b_stack->top - 1];
 	const int	a_rear = a_stack->deque[a_stack->rear];
-	int			ret;
 
 	if (a_top >= b_top && a_top >= a_rear)
 		return (A_STACK_TOP);
@@ -65,7 +64,6 @@ enum e_ps_prime_num_pos	ps_min_num_pos(
 	const int	a_top = ft_deque_typesymbol_peek_back(a_stack);
 	const int	b_top = ft_deque_typesymbol_peek_back(b_stack);
 	const int	a_rear = ft_deque_typesymbol_peek_front(a_stack);
-	int			ret;
 
 	if (a_top <= b_top && a_top <= a_rear)
 		return (A_STACK_TOP);
@@ -176,8 +174,6 @@ void	push_swap(
 )
 {
 	int	status;
-	int	prime_num_pos;
-	int	i;
 	t_ps_stack	a_stack = {a_nums, a_runs};
 	t_ps_stack	b_stack = {b_nums, b_runs};
 	t_run	new_run;
