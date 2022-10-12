@@ -33,7 +33,7 @@ void	nums_to_int_stack(
 	while (--i >= 0)
 		ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
 	i = nums->len;
-	while (--i > 0)
+	while (--i >= 0)
 	{
 		crnnt = compare(nums->arr[i - 1], nums->arr[i]);
 		next = crnnt;
