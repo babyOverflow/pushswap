@@ -13,7 +13,7 @@
 
 enum e_order	compare(int x, int y)
 {
-	if (x > y)
+	if (x < y)
 		return (Ascending);
 	else
 		return (Descending);
