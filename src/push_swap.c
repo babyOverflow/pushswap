@@ -42,7 +42,7 @@ int	ps_status(
 	return (status);
 }
 
-enum e_ps_prime_num_pos	ps_max_num_pos(
+enum e_ps_prime_num_pos	ps_min_num_pos(
 	t_deque_typesymbol *a_stack,
 	t_deque_typesymbol *b_stack,
 	int	status
@@ -52,28 +52,28 @@ enum e_ps_prime_num_pos	ps_max_num_pos(
 	const int	a_top = ft_deque_typesymbol_peek_back(a_stack);
 	const int	b_top = ft_deque_typesymbol_peek_back(b_stack);
 	const int	a_rear = ft_deque_typesymbol_peek_front(a_stack);
-	int			max_num;
+	int			min_num;
 
-	max_num = INT_MIN;
+	min_num = INT_MAX;
 	if (status == AAA || status == AAD || status == ADD)
-		if (a_top > max_num)
-			max_num = a_top;
+		if (a_top < min_num)
+			min_num = a_top;
 	if (status == AAA || status == AAD || status == DAD)
-		if (b_top > max_num)
-			max_num = b_top;
+		if (b_top < min_num)
+			min_num = b_top;
 	if (status == AAD || status == ADD || status == DAD)
-		if (a_rear > max_num)
-			max_num = a_rear;
-	if (max_num == a_top)
+		if (a_rear < min_num)
+			min_num = a_rear;
+	if (min_num == a_top)
 		ret = A_STACK_TOP;
-	else if (max_num == b_top)
+	else if (min_num == b_top)
 		ret = B_STACK_TOP;
 	else
 		ret = A_STACK_REAR;
 	return (ret);
 }
 
-enum e_ps_prime_num_pos	ps_min_num_pos(
+enum e_ps_prime_num_pos	ps_max_num_pos(
 	t_deque_typesymbol *a_stack,
 	t_deque_typesymbol *b_stack,
 	int	status
@@ -83,21 +83,21 @@ enum e_ps_prime_num_pos	ps_min_num_pos(
 	const int				a_top = ft_deque_typesymbol_peek_back(a_stack);
 	const int				b_top = ft_deque_typesymbol_peek_back(b_stack);
 	const int				a_rear = ft_deque_typesymbol_peek_front(a_stack);
-	int						min_num;
+	int						max_num;
 
-	min_num = INT_MAX;
+	max_num = INT_MIN;
 	if (status == DDD || status == DDA || status == DAA)
-		if (a_top > min_num)
-			min_num = a_top;
+		if (a_top > max_num)
+			max_num = a_top;
 	if (status == DDD || status == DDA || status == ADA)
-		if (b_top > min_num)
-			min_num = b_top;
+		if (b_top > max_num)
+			max_num = b_top;
 	if (status == DDA || status == DAA || status == ADA)
-		if (a_rear > min_num)
-			min_num = a_rear;
-	if (min_num == a_top)
+		if (a_rear > max_num)
+			max_num = a_rear;
+	if (max_num == a_top)
 		ret = A_STACK_TOP;
-	else if (min_num == b_top)
+	else if (max_num == b_top)
 		ret = B_STACK_TOP;
 	else
 		ret = A_STACK_REAR;
@@ -134,11 +134,11 @@ void	merge(
 	if (len <= 0)
 		return ;
 	if (num_pos_status == AAA || num_pos_status == AAD
-		|| num_pos_status == ADD || num_pos_status == DAA)
-		prime_num_pos = ps_max_num_pos(
+		|| num_pos_status == ADD || num_pos_status == DAD)
+		prime_num_pos = ps_min_num_pos(
 			a_stack->numbers, b_stack->numbers, num_pos_status);
 	else
-		prime_num_pos = ps_min_num_pos(
+		prime_num_pos = ps_max_num_pos(
 			a_stack->numbers, b_stack->numbers, num_pos_status);
 	if (prime_num_pos == A_STACK_TOP)
 	{

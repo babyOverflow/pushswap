@@ -24,29 +24,28 @@ void	nums_to_int_stack(
 	t_ps_stack *stack
 )
 {
-	int				i;
-	enum e_order	o_crnt;
-	t_run			run;
+	int		i;
+	t_run	run;
+	enum e_order	crnnt;
+	enum e_order	next;
 
-	i = nums->len - 1;
-	run = (t_run){.len = 0, .ord = compare(nums->arr[i - 1], nums->arr[i])};
-	while (i >= 0)
+	i = nums->len;
+	while (--i >= 0)
+		ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
+	i = nums->len;
+	while (--i > 0)
 	{
-		o_crnt = run.ord;
-		while (run.ord == o_crnt)
+		crnnt = compare(nums->arr[i - 1], nums->arr[i]);
+		next = crnnt;
+		run	= (t_run){1, crnnt};
+		while (crnnt == next && i > 0)
 		{
-			ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
-			++run.len;
-			if (--i < 0)
-				return (ft_deque_run_push_back(stack->runs, run));
-			o_crnt = compare(nums->arr[i - 1], nums->arr[i]);
+			run.len++;
+			--i;
+			next = compare(nums->arr[i - 1], nums->arr[i]);
 		}
 		ft_deque_run_push_back(stack->runs, run);
-		ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
-		--i;
-		run = (t_run){1, compare(nums->arr[i - 1], nums->arr[i])};
 	}
-	ft_deque_run_push_back(stack->runs, run);
 }
 
 int	main(int ac, char *av[])
