@@ -69,8 +69,7 @@ int	main(int ac, char *av[])
 
 
 	i = -1;
-	push_swap(&a_stack, &b_stack, &a_runs, &b_runs);
-	push_swap(&a_stack, &b_stack, &a_runs, &b_runs);
+	push_swap(&(t_ps_stack){&a_stack, &a_runs}, &(t_ps_stack){&b_stack, &b_runs});
 	while (++i < numbers.len)
 	{
 		n = ft_deque_typesymbol_pop_front(&b_stack);

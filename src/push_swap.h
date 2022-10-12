@@ -59,8 +59,6 @@ void	sa(t_deque_typesymbol *a_stack, t_deque_typesymbol *b_stack);
 void	sb(t_deque_typesymbol *a_stack, t_deque_typesymbol *b_stack);
 
 void	push_swap(
-	t_deque_typesymbol *a_stack,
-	t_deque_typesymbol *b_stack,
-	t_deque_run *a_runs,
-	t_deque_run *b_runs
+	t_ps_stack *a_stack,
+	t_ps_stack *b_stack
 );

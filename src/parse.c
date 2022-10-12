@@ -34,7 +34,7 @@ static int	is_valid_num(char *str)
 	return (1);
 }
 
-static int	_ft_assign_num(int *numbers, int len, char *strs[])
+static int	_ft_assign_num(int *numbers, int num_idx, char *strs[])
 {
 	int	i;
 	int	j;
@@ -44,7 +44,7 @@ static int	_ft_assign_num(int *numbers, int len, char *strs[])
 	{
 		if (is_valid_num(strs[i]))
 		{
-			numbers[i] = ft_atoi(strs[i]);
+			numbers[num_idx] = ft_atoi(strs[i]);
 			j = i;
 			while (--j >= 0)
 				if (numbers[j] == numbers[i])
@@ -53,8 +53,9 @@ static int	_ft_assign_num(int *numbers, int len, char *strs[])
 		else
 			return (-1);
 		++i;
+		++num_idx;
 	}
-	return (1);
+	return (num_idx);
 }
 
 t_parsed_num	ps_parse(int ac, char *av[])
@@ -63,7 +64,7 @@ t_parsed_num	ps_parse(int ac, char *av[])
 	int		i;
 	char	***temp;
 	int		*numbers;
-	int		check_num;
+	int		num_idx;
 
 	ret = 0;
 	i = 0;
@@ -74,11 +75,11 @@ t_parsed_num	ps_parse(int ac, char *av[])
 		ret += _ft_strvlen(temp[i]);
 	}
 	numbers = malloc(sizeof(int) * (ret + 1));
-	check_num = 1;
+	num_idx = 0;
 	i = 0;
-	while (++i < ac && check_num == 1)
-		check_num = _ft_assign_num(numbers, ret, temp[i]);
-	if (check_num == -1)
+	while (++i < ac && num_idx != -1)
+		num_idx = _ft_assign_num(numbers, num_idx, temp[i]);
+	if (num_idx == -1)
 	{
 		ft_printf("Error\n");
 		exit(-1);
