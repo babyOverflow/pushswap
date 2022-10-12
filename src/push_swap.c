@@ -15,7 +15,6 @@
 
 #define EMPTY 0b1000
 
-
 enum e_ps_prime_num_pos {
 	A_STACK_TOP,
 	B_STACK_TOP,
@@ -38,21 +37,20 @@ int	ps_status(
 	status |= ft_deque_run_peek_back(a_run).ord << 2;
 	status |= ft_deque_run_peek_back(b_run).ord << 1;
 	status |= ft_deque_run_peek_front(a_run).ord << 0;
-
 	return (status);
 }
 
 enum e_ps_prime_num_pos	ps_min_num_pos(
 	t_deque_typesymbol *a_stack,
 	t_deque_typesymbol *b_stack,
-	int	status
+	int status
 )
 {
 	enum e_ps_prime_num_pos	ret;
-	const int	a_top = ft_deque_typesymbol_peek_back(a_stack);
-	const int	b_top = ft_deque_typesymbol_peek_back(b_stack);
-	const int	a_rear = ft_deque_typesymbol_peek_front(a_stack);
-	int			min_num;
+	const int				a_top = ft_deque_typesymbol_peek_back(a_stack);
+	const int				b_top = ft_deque_typesymbol_peek_back(b_stack);
+	const int				a_rear = ft_deque_typesymbol_peek_front(a_stack);
+	int						min_num;
 
 	min_num = INT_MAX;
 	if (status == AAA || status == AAD || status == ADD)
@@ -76,7 +74,7 @@ enum e_ps_prime_num_pos	ps_min_num_pos(
 enum e_ps_prime_num_pos	ps_max_num_pos(
 	t_deque_typesymbol *a_stack,
 	t_deque_typesymbol *b_stack,
-	int	status
+	int status
 )
 {
 	enum e_ps_prime_num_pos	ret;
@@ -122,43 +120,37 @@ void	push_run(t_ps_stack *a_stack, t_ps_stack *b_stack)
 #define NUM_POS_MASK 0b111
 
 void	merge(
-	t_ps_stack *a_stack,
-	t_ps_stack *b_stack,
+	t_ps_stack *a,
+	t_ps_stack *b,
 	int status,
 	int len
 )
 {
 	int			prime_num_pos;
-	const int	num_pos_status = status & NUM_POS_MASK;
+	const int	num_pos = status & NUM_POS_MASK;
 
 	if (len <= 0)
 		return ;
-	if (num_pos_status == AAA || num_pos_status == AAD
-		|| num_pos_status == ADD || num_pos_status == DAD)
-		prime_num_pos = ps_min_num_pos(
-			a_stack->numbers, b_stack->numbers, num_pos_status);
+	if (num_pos == AAA || num_pos == AAD || num_pos == ADD || num_pos == DAD)
+		prime_num_pos = ps_min_num_pos(a->numbers, b->numbers, num_pos);
 	else
-		prime_num_pos = ps_max_num_pos(
-			a_stack->numbers, b_stack->numbers, num_pos_status);
+		prime_num_pos = ps_max_num_pos(a->numbers, b->numbers, num_pos);
 	if (prime_num_pos == A_STACK_TOP)
 	{
-		pb(a_stack->numbers, b_stack->numbers);
-		rb(a_stack->numbers, b_stack->numbers);
+		pb(a->numbers, b->numbers);
+		rb(a->numbers, b->numbers);
 	}
 	else if (prime_num_pos == B_STACK_TOP)
 	{
-		rb(a_stack->numbers, b_stack->numbers);
+		rb(a->numbers, b->numbers);
 	}
 	else if (prime_num_pos == A_STACK_REAR)
 	{
-		rra(a_stack->numbers, b_stack->numbers);
-		pb(a_stack->numbers, b_stack->numbers);
-		rb(a_stack->numbers, b_stack->numbers);
+		rra(a->numbers, b->numbers);
+		pb(a->numbers, b->numbers);
+		rb(a->numbers, b->numbers);
 	}
-	else {
-		assert(0);
-	}
-	merge(a_stack, b_stack, status, len - 1);
+	merge(a, b, status, len - 1);
 }
 
 t_run	merge_run(
@@ -176,25 +168,18 @@ t_run	merge_run(
 	else
 		ret.ord = Descending;
 	if (num_pos_status == AAA || num_pos_status == DDD)
-	{
-		ret.len = ft_deque_run_pop_back(a_stack->runs).len + 
-			ft_deque_run_pop_back(b_stack->runs).len;
-	}
+		ret.len = ft_deque_run_pop_back(a_stack->runs).len
+			+ ft_deque_run_pop_back(b_stack->runs).len;
 	else if (num_pos_status == AAD || num_pos_status == DDA)
-	{
-		ret.len = ft_deque_run_pop_back(a_stack->runs).len + 
-			ft_deque_run_pop_back(b_stack->runs).len +
-			ft_deque_run_pop_front(a_stack->runs).len;
-	}
+		ret.len = ft_deque_run_pop_back(a_stack->runs).len
+			+ ft_deque_run_pop_back(b_stack->runs).len
+			+ ft_deque_run_pop_front(a_stack->runs).len;
 	else if (num_pos_status == ADA || num_pos_status == DAD)
-	{
-		ret.len = ft_deque_run_pop_back(b_stack->runs).len +
-			ft_deque_run_pop_front(a_stack->runs).len;
-	}
-	else {
-		ret.len = ft_deque_run_pop_back(a_stack->runs).len +
-			ft_deque_run_pop_front(a_stack->runs).len;
-	}
+		ret.len = ft_deque_run_pop_back(b_stack->runs).len
+			+ ft_deque_run_pop_front(a_stack->runs).len;
+	else
+		ret.len = ft_deque_run_pop_back(a_stack->runs).len
+			+ ft_deque_run_pop_front(a_stack->runs).len;
 	return (ret);
 }
 
@@ -205,10 +190,10 @@ void	push_swap(
 	t_deque_run *b_runs
 )
 {
-	int	status;
+	int			status;
 	t_ps_stack	a_stack = {a_nums, a_runs};
 	t_ps_stack	b_stack = {b_nums, b_runs};
-	t_run	new_run;
+	t_run		new_run;
 
 	status = ps_status(a_runs, b_runs);
 	if (status & EMPTY)
