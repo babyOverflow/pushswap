@@ -17,6 +17,13 @@ void	rb(t_deque_typesymbol *a_stack, t_deque_typesymbol *b_stack)
 	ft_printf("rb\n");
 }
 
+void	rx(t_ps_stack *x_stack)
+{
+	_typesymbol	temp = ft_deque_typesymbol_pop_back(x_stack->numbers);
+	ft_deque_typesymbol_push_front(x_stack->numbers, temp);
+	ft_printf("r%s\n", x_stack->name);
+}
+
 void	pa(t_deque_typesymbol *a_stack, t_deque_typesymbol *b_stack)
 {
 	_typesymbol	temp = ft_deque_typesymbol_pop_back(b_stack);

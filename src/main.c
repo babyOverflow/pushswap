@@ -52,27 +52,37 @@ int	main(int ac, char *av[])
 {
 	int					i;
 	t_parsed_num		numbers;
-	t_deque_typesymbol	a_stack;
-	t_deque_typesymbol	b_stack;
+	t_deque_typesymbol	a_nums;
+	t_deque_typesymbol	b_nums;
 	int			n; 
 
 	if (ac < 1)
 		return (0);
 	numbers = ps_parse(ac, av);
-	a_stack = ft_deque_typesymbol_create(numbers.len + 2);
-	b_stack = ft_deque_typesymbol_create(numbers.len + 2);
+	a_nums = ft_deque_typesymbol_create(numbers.len + 2);
+	b_nums = ft_deque_typesymbol_create(numbers.len + 2);
 
 	t_deque_run a_runs = ft_deque_run_create(numbers.len + 1);
 	t_deque_run b_runs = ft_deque_run_create(numbers.len + 1);
 
-	nums_to_int_stack(&numbers, &((t_ps_stack){&a_stack, &a_runs}));
+	t_ps_stack	a_stack = {&a_nums, &a_runs, "a"};
+	t_ps_stack	b_stack = {&b_nums, &b_runs, "b"};
+	nums_to_int_stack(&numbers, &a_stack);
 
 
 	i = -1;
-	push_swap(&(t_ps_stack){&a_stack, &a_runs}, &(t_ps_stack){&b_stack, &b_runs});
+	while (1)
+	{
+		push_swap(&a_stack, &b_stack);
+		if (ft_deque_run_len(b_stack.runs) == 1)
+			break ;
+		push_swap(&b_stack, &a_stack);
+		if (ft_deque_run_len(b_stack.runs) == 1)
+			break ;
+	}
 	while (++i < numbers.len)
 	{
-		n = ft_deque_typesymbol_pop_front(&b_stack);
+		n = ft_deque_typesymbol_pop_front(&b_nums);
 		printf("%d \n", n);
 	}
 }

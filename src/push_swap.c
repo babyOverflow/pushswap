@@ -184,23 +184,25 @@ t_run	merge_run(
 }
 
 void	push_swap(
-	t_ps_stack *a_stack,
-	t_ps_stack *b_stack
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack
 )
 {
 	int			status;
 	t_run		new_run;
 
-	status = ps_status(a_stack->runs, b_stack->runs);
+	status = ps_status(l_stack->runs, r_stack->runs);
 	if (status & EMPTY)
 	{
-		push_run(a_stack, b_stack);
+		push_run(l_stack, r_stack);
 	}
 	else
 	{
-		new_run = merge_run(a_stack, b_stack, status);
-		ft_deque_run_push_back(b_stack->runs, new_run);
-		merge(a_stack, b_stack, status, new_run.len);
+		new_run = merge_run(l_stack, r_stack, status);
+		ft_deque_run_push_back(r_stack->runs, new_run);
+		merge(l_stack, r_stack, status, new_run.len);
 	}
-	push_swap(a_stack, b_stack);
+	if (ft_deque_run_peek_back(l_stack->runs).ord ==  None)
+		return ;
+	push_swap(l_stack, r_stack);
 }

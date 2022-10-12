@@ -30,6 +30,7 @@ typedef struct s_deque_run {
 typedef struct s_ps_stack {
 	t_deque_typesymbol	*numbers;
 	t_deque_run			*runs;
+	char				*name;
 }	t_ps_stack;
 
 
@@ -44,10 +45,11 @@ _typesymbol	ft_deque_typesymbol_peek_front(t_deque_typesymbol *self);
 t_deque_run	ft_deque_run_create(int size);
 void		ft_deque_run_push_back(t_deque_run *self, t_run x);
 void		ft_deque_run_push_front(t_deque_run *self, t_run x);
-t_run	ft_deque_run_pop_back(t_deque_run *self);
-t_run	ft_deque_run_pop_front(t_deque_run *self);
-t_run	ft_deque_run_peek_back(t_deque_run *self);
-t_run	ft_deque_run_peek_front(t_deque_run *self);
+t_run		ft_deque_run_pop_back(t_deque_run *self);
+t_run		ft_deque_run_pop_front(t_deque_run *self);
+t_run		ft_deque_run_peek_back(t_deque_run *self);
+t_run		ft_deque_run_peek_front(t_deque_run *self);
+int			ft_deque_run_len(t_deque_run *self);
 
 void	ra(t_deque_typesymbol *a_stack, t_deque_typesymbol *b_stack);
 void	rb(t_deque_typesymbol *a_stack, t_deque_typesymbol *b_stack);
