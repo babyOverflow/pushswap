@@ -13,7 +13,7 @@
 
 enum e_order	compare(int x, int y)
 {
-	if (x > y)
+	if (x < y)
 		return (Ascending);
 	else
 		return (Descending);
@@ -37,7 +37,7 @@ void	nums_to_int_stack(
 		{
 			ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
 			++run.len;
-			if (--i <= 0)
+			if (--i < 0)
 				return (ft_deque_run_push_back(stack->runs, run));
 			o_crnt = compare(nums->arr[i - 1], nums->arr[i]);
 		}
