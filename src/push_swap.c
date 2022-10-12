@@ -83,12 +83,24 @@ enum e_ps_prime_num_pos	ps_min_num_pos(
 	const int				a_top = ft_deque_typesymbol_peek_back(a_stack);
 	const int				b_top = ft_deque_typesymbol_peek_back(b_stack);
 	const int				a_rear = ft_deque_typesymbol_peek_front(a_stack);
+	int						min_num;
 
-	ret = (A_STACK_TOP);
-	if (b_top <= a_top && b_top <= a_rear)
-		ret = (B_STACK_TOP);
-	else if (status == AAD)
-		ret = (A_STACK_REAR);
+	min_num = INT_MAX;
+	if (status == DDD || status == DDA || status == DAA)
+		if (a_top > min_num)
+			min_num = a_top;
+	if (status == DDD || status == DDA || status == ADA)
+		if (b_top > min_num)
+			min_num = b_top;
+	if (status == DDA || status == DAA || status == ADA)
+		if (a_rear > min_num)
+			min_num = a_rear;
+	if (min_num == a_top)
+		ret = A_STACK_TOP;
+	else if (min_num == b_top)
+		ret = B_STACK_TOP;
+	else
+		ret = A_STACK_REAR;
 	return (ret);
 }
 
