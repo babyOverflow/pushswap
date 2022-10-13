@@ -6,7 +6,6 @@ enum e_order {
 	None
 };
 
-
 typedef struct s_deque_int {
 	int			top;
 	int			rear;

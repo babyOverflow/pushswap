@@ -70,17 +70,27 @@ int	main(int ac, char *av[])
 	nums_to_int_stack(&numbers, &a_stack);
 
 
-	i = -1;
 	while (1)
 	{
 		push_swap(&a_stack, &b_stack);
-		if (ft_deque_run_len(b_stack.runs) == 1)
+		if (ft_deque_run_len(b_stack.runs) <= 1)
 			break ;
 		push_swap(&b_stack, &a_stack);
-		if (ft_deque_run_len(a_stack.runs) == 1)
+		if (ft_deque_run_len(a_stack.runs) <= 1)
 			break ;
 	}
-	while (++i < numbers.len)
+	// push_swap(&a_stack, &b_stack);
+	// push_swap(&b_stack, &a_stack);
+	n = 1;
+	i = -1;
+	while (++i < numbers.len && n != 0)
+	{
+		n = pop_front_ft_deque_int(&a_nums);
+		printf("%d \n", n);
+	}
+	n = 1;
+	i = -1;
+	while (++i < numbers.len && n != 0)
 	{
 		n = pop_front_ft_deque_int(&b_nums);
 		printf("%d \n", n);

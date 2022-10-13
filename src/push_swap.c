@@ -59,7 +59,7 @@ enum e_ps_prime_num_pos	ps_min_num_pos(
 	if (status == AAA || status == AAD || status == DAD)
 		if (b_top < num_min)
 			num_min = b_top;
-	if (status == AAD || status == ADD || status == DAD)
+	if (status == ADD || status == DAD)
 		if (a_rear < num_min)
 			num_min = a_rear;
 	if (num_min == a_top)
@@ -90,7 +90,7 @@ enum e_ps_prime_num_pos	ps_max_num_pos(
 	if (status == DDD || status == DDA || status == ADA)
 		if (b_top > num_max)
 			num_max = b_top;
-	if (status == DDA || status == DAA || status == ADA)
+	if (status == DAA || status == ADA)
 		if (a_rear > num_max)
 			num_max = a_rear;
 	if (num_max == a_top)
@@ -129,7 +129,7 @@ void	merge_number(
 	int			prime_num_pos;
 	const int	num_pos = status & NUM_POS_MASK;
 
-	if (len <= 0)
+	if (len <= 1)
 		return ;
 	if (num_pos == AAA || num_pos == AAD || num_pos == ADD || num_pos == DAD)
 		prime_num_pos = ps_min_num_pos(l_stack->numbers, r_stack->numbers, num_pos);
@@ -172,8 +172,7 @@ t_run	merge_run(
 			+ ft_deque_run_pop_back(b_stack->runs).len;
 	else if (num_pos_status == AAD || num_pos_status == DDA)
 		ret.len = ft_deque_run_pop_back(a_stack->runs).len
-			+ ft_deque_run_pop_back(b_stack->runs).len
-			+ ft_deque_run_pop_front(a_stack->runs).len;
+			+ ft_deque_run_pop_back(b_stack->runs).len;
 	else if (num_pos_status == ADA || num_pos_status == DAD)
 		ret.len = ft_deque_run_pop_back(b_stack->runs).len
 			+ ft_deque_run_pop_front(a_stack->runs).len;
@@ -191,7 +190,7 @@ void	merge(
 {
 	t_run	new_run;
 	new_run = merge_run(l_stack, r_stack, status);
-	ft_deque_run_push_back(r_stack->runs, new_run);
+	ft_deque_run_push_front(r_stack->runs, new_run);
 	merge_number(l_stack, r_stack, status, new_run.len);
 }
 
