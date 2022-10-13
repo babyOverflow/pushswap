@@ -1,5 +1,17 @@
 #include <stdlib.h>
 
+#define AAA 0b000
+#define AAD 0b001 
+#define ADA 0b010 
+#define ADD 0b011 
+#define DAA 0b100
+#define DAD 0b101
+#define DDA 0b110
+#define DDD 0b111
+
+#define EMPTY 0b1000
+#define SUPER -1
+
 enum e_order {
 	Ascending = 0,
 	Descending = 1,

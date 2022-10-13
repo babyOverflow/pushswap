@@ -81,6 +81,7 @@ int	main(int ac, char *av[])
 	}
 	// push_swap(&a_stack, &b_stack);
 	// push_swap(&b_stack, &a_stack);
+	merge(&b_stack, &a_stack, AAA);
 	n = 1;
 	i = -1;
 	while (++i < numbers.len && n != 0)
@@ -90,6 +91,7 @@ int	main(int ac, char *av[])
 	}
 	n = 1;
 	i = -1;
+
 	while (++i < numbers.len && n != 0)
 	{
 		n = pop_front_ft_deque_int(&b_nums);

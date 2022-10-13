@@ -4,17 +4,6 @@
 #include "push_swap.h"
 #include "libft.h"
 
-#define AAA 0b000
-#define AAD 0b001 
-#define ADA 0b010 
-#define ADD 0b011 
-#define DAA 0b100
-#define DAD 0b101
-#define DDA 0b110
-#define DDD 0b111
-
-#define EMPTY 0b1000
-
 enum e_ps_prime_num_pos {
 	A_STACK_TOP,
 	B_STACK_TOP,
@@ -53,15 +42,18 @@ enum e_ps_prime_num_pos	ps_min_num_pos(
 	int						num_min;
 
 	num_min = INT_MAX;
-	if (status == AAA || status == AAD || status == ADD)
+	if (status == AAA || status == AAD || status == ADD || status == SUPER)
 		if (a_top < num_min)
 			num_min = a_top;
-	if (status == AAA || status == AAD || status == DAD)
+	if (status == AAA || status == AAD || status == DAD || status == SUPER)
 		if (b_top < num_min)
 			num_min = b_top;
-	if (status == ADD || status == DAD)
+	if (status == ADD || status == DAD || status == SUPER)
 		if (a_rear < num_min)
 			num_min = a_rear;
+	if (status == SUPER)
+		if (peek_front_ft_deque_int(b_stack) < num_min)
+			return (B_STACK_REAR);
 	if (num_min == a_top)
 		ret = A_STACK_TOP;
 	else if (num_min == b_top)
