@@ -63,6 +63,12 @@ void	rx(t_ps_stack *x_stack);
 void	rrx(t_ps_stack *x_stack);
 
 void	push_swap(
-	t_ps_stack *a_stack,
-	t_ps_stack *b_stack
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack
+);
+
+void	merge(
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack,
+	int	status
 );

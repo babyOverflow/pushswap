@@ -102,7 +102,7 @@ enum e_ps_prime_num_pos	ps_max_num_pos(
 	return (ret);
 }
 
-void	push_run(t_ps_stack *l_stack, t_ps_stack *r_stack)
+void	push(t_ps_stack *l_stack, t_ps_stack *r_stack)
 {
 	t_run	new_run;
 	int		i;
@@ -119,7 +119,7 @@ void	push_run(t_ps_stack *l_stack, t_ps_stack *r_stack)
 
 #define NUM_POS_MASK 0b111
 
-void	merge(
+void	merge_number(
 	t_ps_stack *l_stack,
 	t_ps_stack *r_stack,
 	int status,
@@ -150,7 +150,7 @@ void	merge(
 		px(l_stack, r_stack);
 		rx(r_stack);
 	}
-	merge(l_stack, r_stack, status, len - 1);
+	merge_number(l_stack, r_stack, status, len - 1);
 }
 
 t_run	merge_run(
@@ -183,26 +183,35 @@ t_run	merge_run(
 	return (ret);
 }
 
+void	merge(
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack,
+	int	status
+)
+{
+	t_run	new_run;
+	new_run = merge_run(l_stack, r_stack, status);
+	ft_deque_run_push_back(r_stack->runs, new_run);
+	merge_number(l_stack, r_stack, status, new_run.len);
+}
+
 void	push_swap(
 	t_ps_stack *l_stack,
 	t_ps_stack *r_stack
 )
 {
 	int			status;
-	t_run		new_run;
 
+	if (ft_deque_run_len(l_stack->runs) <=  1)
+		return ;
 	status = get_ps_status(l_stack->runs, r_stack->runs);
 	if (status & EMPTY)
 	{
-		push_run(l_stack, r_stack);
+		push(l_stack, r_stack);
 	}
 	else
 	{
-		new_run = merge_run(l_stack, r_stack, status);
-		ft_deque_run_push_back(r_stack->runs, new_run);
-		merge(l_stack, r_stack, status, new_run.len);
+		merge(l_stack, r_stack, status);
 	}
-	if (ft_deque_run_peek_back(l_stack->runs).ord ==  None)
-		return ;
 	push_swap(l_stack, r_stack);
 }

@@ -33,8 +33,8 @@ void	rrx(t_ps_stack *x_stack)
 
 void	px(t_ps_stack *stack_src, t_ps_stack *stack_dest)
 {
-	int	temp = pop_back_ft_deque_int(stack_dest->numbers);
-	push_back_ft_deque_int(stack_src->numbers, temp);
+	int	temp = pop_back_ft_deque_int(stack_src->numbers);
+	push_back_ft_deque_int(stack_dest->numbers, temp);
 	ft_printf("p%s\n", stack_dest->name);
 }
 

@@ -77,7 +77,7 @@ int	main(int ac, char *av[])
 		if (ft_deque_run_len(b_stack.runs) == 1)
 			break ;
 		push_swap(&b_stack, &a_stack);
-		if (ft_deque_run_len(b_stack.runs) == 1)
+		if (ft_deque_run_len(a_stack.runs) == 1)
 			break ;
 	}
 	while (++i < numbers.len)
