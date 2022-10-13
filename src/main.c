@@ -20,7 +20,7 @@ enum e_order	compare(int x, int y)
 }
 
 void	nums_to_int_stack(
-	t_parsed_num *nums,
+	const t_parsed_num *nums,
 	t_ps_stack *stack
 )
 {
@@ -31,7 +31,7 @@ void	nums_to_int_stack(
 
 	i = nums->len;
 	while (--i >= 0)
-		ft_deque_typesymbol_push_back(stack->numbers, nums->arr[i]);
+		push_back_ft_deque_int(stack->numbers, nums->arr[i]);
 	i = nums->len;
 	while (--i >= 0)
 	{
@@ -52,15 +52,15 @@ int	main(int ac, char *av[])
 {
 	int					i;
 	t_parsed_num		numbers;
-	t_deque_typesymbol	a_nums;
-	t_deque_typesymbol	b_nums;
+	t_deque_int	a_nums;
+	t_deque_int	b_nums;
 	int			n; 
 
 	if (ac < 1)
 		return (0);
 	numbers = ps_parse(ac, av);
-	a_nums = ft_deque_typesymbol_create(numbers.len + 2);
-	b_nums = ft_deque_typesymbol_create(numbers.len + 2);
+	a_nums = ft_deque_int_create(numbers.len + 2);
+	b_nums = ft_deque_int_create(numbers.len + 2);
 
 	t_deque_run a_runs = ft_deque_run_create(numbers.len + 1);
 	t_deque_run b_runs = ft_deque_run_create(numbers.len + 1);
@@ -82,7 +82,7 @@ int	main(int ac, char *av[])
 	}
 	while (++i < numbers.len)
 	{
-		n = ft_deque_typesymbol_pop_front(&b_nums);
+		n = pop_front_ft_deque_int(&b_nums);
 		printf("%d \n", n);
 	}
 }

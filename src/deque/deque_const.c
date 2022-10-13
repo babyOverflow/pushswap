@@ -1,8 +1,8 @@
 #include "push_swap.h"
 
-_typesymbol	ft_deque_typesymbol_peek_back(t_deque_typesymbol *self)
+int	peek_back_ft_deque_int(t_deque_int *self)
 {
-	_typesymbol	ret;
+	int	ret;
 
 	if (self->rear == self->top)
 	{
@@ -14,9 +14,9 @@ _typesymbol	ft_deque_typesymbol_peek_back(t_deque_typesymbol *self)
 	return (ret);
 }
 
-_typesymbol	ft_deque_typesymbol_peek_front(t_deque_typesymbol *self)
+int	peek_front_ft_deque_int(t_deque_int *self)
 {
-	_typesymbol	ret;
+	int	ret;
 
 	if (self->rear == self->top)
 	{
