@@ -10,7 +10,6 @@
 #define DDD 0b111
 
 #define EMPTY 0b1000
-#define SUPER -1
 
 enum e_order {
 	Ascending = 0,
@@ -18,10 +17,22 @@ enum e_order {
 	None
 };
 
+enum e_ps_prime_num_pos {
+	L_STACK_TOP = 0b1,
+	R_STACK_TOP = 0b10,
+	L_STACK_REAR = 0b100,
+	R_STACK_REAR = 0b1000
+};
+
+typedef struct s_target {
+	enum e_ps_prime_num_pos	pos_candidates;
+	enum e_order			target_ord;
+}	t_merge_action_spec;
+
 typedef struct s_deque_int {
-	int			top;
-	int			rear;
-	int			capa;
+	int	top;
+	int	rear;
+	int	capa;
 	int	*deque;
 }	t_deque_int;
 
@@ -39,8 +50,8 @@ typedef struct s_deque_run {
 
 typedef struct s_ps_stack {
 	t_deque_int	*numbers;
-	t_deque_run			*runs;
-	char				*name;
+	t_deque_run	*runs;
+	char		*name;
 }	t_ps_stack;
 
 
@@ -51,6 +62,7 @@ int	pop_back_ft_deque_int(t_deque_int *self);
 int	pop_front_ft_deque_int(t_deque_int *self);
 int	peek_back_ft_deque_int(t_deque_int *self);
 int	peek_front_ft_deque_int(t_deque_int *self);
+int			ft_deque_int_len(t_deque_int *self);
 
 t_deque_run	ft_deque_run_create(int size);
 void		ft_deque_run_push_back(t_deque_run *self, t_run x);
@@ -81,5 +93,11 @@ void	push_swap(
 void	merge(
 	t_ps_stack *l_stack,
 	t_ps_stack *r_stack,
-	int	status
+	t_merge_action_spec	*spec
+);
+
+void	merge_final(
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack,
+	int len
 );

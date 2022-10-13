@@ -25,3 +25,13 @@ int	peek_front_ft_deque_int(t_deque_int *self)
 	ret = self->deque[self->rear];
 	return (ret);
 }
+
+int	ft_deque_int_len(t_deque_int *self)
+{
+	int	ret;
+
+	ret = self->top - self->rear;
+	if (ret < 0)
+		ret += self->capa;
+	return (ret);
+}

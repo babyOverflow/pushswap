@@ -81,7 +81,8 @@ int	main(int ac, char *av[])
 	}
 	// push_swap(&a_stack, &b_stack);
 	// push_swap(&b_stack, &a_stack);
-	merge(&b_stack, &a_stack, AAA);
+	// int	len = ft_deque_int_len(b_stack.numbers) + ft_deque_int_len(a_stack.numbers);
+	// merge_final(&b_stack, &a_stack, len);
 	n = 1;
 	i = -1;
 	while (++i < numbers.len && n != 0)

@@ -4,12 +4,28 @@
 #include "push_swap.h"
 #include "libft.h"
 
-enum e_ps_prime_num_pos {
-	A_STACK_TOP,
-	B_STACK_TOP,
-	A_STACK_REAR,
-	B_STACK_REAR
-};
+t_merge_action_spec get_nomal_phase_merge_action_spec(
+	int status
+)
+{
+	t_merge_action_spec	ret;
+
+	ret.pos_candidates = 0;
+	if (status == AAA || status == AAD || status == ADD || status == DAD)
+		ret.target_ord = Ascending;
+	else
+	{
+		ret.target_ord = Descending;
+		status ^= 0b111;
+	}
+	if (status == AAA || status == AAD || status == ADD)
+		ret.pos_candidates |= L_STACK_TOP;
+	if (status == AAA || status == AAD || status == DAD)
+		ret.pos_candidates |= R_STACK_TOP;
+	if (status == ADD || status == DAD)
+		ret.pos_candidates |= L_STACK_REAR;
+	return (ret);
+}
 
 int	get_ps_status(
 	t_deque_run *a_run,
@@ -30,67 +46,63 @@ int	get_ps_status(
 }
 
 enum e_ps_prime_num_pos	ps_min_num_pos(
-	t_deque_int *a_stack,
-	t_deque_int *b_stack,
-	int status
+	t_deque_int *l_stack,
+	t_deque_int *r_stack,
+	t_merge_action_spec *spec
 )
 {
 	enum e_ps_prime_num_pos	ret;
-	const int				a_top = peek_back_ft_deque_int(a_stack);
-	const int				b_top = peek_back_ft_deque_int(b_stack);
-	const int				a_rear = peek_front_ft_deque_int(a_stack);
+	const int				l_top = peek_back_ft_deque_int(l_stack);
+	const int				r_top = peek_back_ft_deque_int(r_stack);
+	const int				l_rear = peek_front_ft_deque_int(l_stack);
 	int						num_min;
 
 	num_min = INT_MAX;
-	if (status == AAA || status == AAD || status == ADD || status == SUPER)
-		if (a_top < num_min)
-			num_min = a_top;
-	if (status == AAA || status == AAD || status == DAD || status == SUPER)
-		if (b_top < num_min)
-			num_min = b_top;
-	if (status == ADD || status == DAD || status == SUPER)
-		if (a_rear < num_min)
-			num_min = a_rear;
-	if (status == SUPER)
-		if (peek_front_ft_deque_int(b_stack) < num_min)
-			return (B_STACK_REAR);
-	if (num_min == a_top)
-		ret = A_STACK_TOP;
-	else if (num_min == b_top)
-		ret = B_STACK_TOP;
-	else
-		ret = A_STACK_REAR;
+	if (spec->pos_candidates & L_STACK_TOP && l_top < num_min)
+		num_min = l_top;
+	if (spec->pos_candidates & R_STACK_TOP && r_top < num_min)
+		num_min = r_top;
+	if (spec->pos_candidates & L_STACK_REAR && l_rear < num_min)
+		num_min = l_rear;
+	if (spec->pos_candidates & R_STACK_REAR)
+		if (peek_front_ft_deque_int(r_stack) < num_min)
+			return (R_STACK_REAR);
+	ret = L_STACK_TOP;
+	if (num_min == r_top)
+		ret = R_STACK_TOP;
+	else if (num_min == l_rear)
+		ret = L_STACK_REAR;
 	return (ret);
 }
 
 enum e_ps_prime_num_pos	ps_max_num_pos(
-	t_deque_int *a_stack,
-	t_deque_int *b_stack,
-	int status
+	t_deque_int *l_stack,
+	t_deque_int *r_stack,
+	t_merge_action_spec *spec
 )
 {
 	enum e_ps_prime_num_pos	ret;
-	const int				a_top = peek_back_ft_deque_int(a_stack);
-	const int				b_top = peek_back_ft_deque_int(b_stack);
-	const int				a_rear = peek_front_ft_deque_int(a_stack);
+	const int				l_top = peek_back_ft_deque_int(l_stack);
+	const int				r_top = peek_back_ft_deque_int(r_stack);
+	const int				l_rear = peek_front_ft_deque_int(l_stack);
 	int						num_max;
 
 	num_max = INT_MIN;
-	if (status == DDD || status == DDA || status == DAA)
-		if (a_top > num_max)
-			num_max = a_top;
-	if (status == DDD || status == DDA || status == ADA)
-		if (b_top > num_max)
-			num_max = b_top;
-	if (status == DAA || status == ADA)
-		if (a_rear > num_max)
-			num_max = a_rear;
-	if (num_max == a_top)
-		ret = A_STACK_TOP;
-	else if (num_max == b_top)
-		ret = B_STACK_TOP;
+	if (spec->pos_candidates & L_STACK_TOP && l_top > num_max)
+		num_max = l_top;
+	if (spec->pos_candidates & R_STACK_TOP && r_top > num_max)
+		num_max = r_top;
+	if (spec->pos_candidates & L_STACK_REAR && l_rear > num_max)
+		num_max = l_rear;
+	if (spec->pos_candidates & R_STACK_REAR)
+		if (peek_front_ft_deque_int(r_stack) > num_max)
+			return (R_STACK_REAR);
+	if (num_max == l_top)
+		ret = L_STACK_TOP;
+	else if (num_max == r_top)
+		ret = R_STACK_TOP;
 	else
-		ret = A_STACK_REAR;
+		ret = L_STACK_REAR;
 	return (ret);
 }
 
@@ -114,76 +126,67 @@ void	push(t_ps_stack *l_stack, t_ps_stack *r_stack)
 void	merge_number(
 	t_ps_stack *l_stack,
 	t_ps_stack *r_stack,
-	int status,
+	t_merge_action_spec *spec,
 	int len
 )
 {
 	int			prime_num_pos;
-	const int	num_pos = status & NUM_POS_MASK;
 
 	if (len <= 1)
 		return ;
-	if (num_pos == AAA || num_pos == AAD || num_pos == ADD || num_pos == DAD)
-		prime_num_pos = ps_min_num_pos(l_stack->numbers, r_stack->numbers, num_pos);
+	if (spec->target_ord == Ascending)
+		prime_num_pos = ps_min_num_pos(l_stack->numbers, r_stack->numbers, spec);
 	else
-		prime_num_pos = ps_max_num_pos(l_stack->numbers, r_stack->numbers, num_pos);
-	if (prime_num_pos == A_STACK_TOP)
+		prime_num_pos = ps_max_num_pos(l_stack->numbers, r_stack->numbers, spec);
+	if (prime_num_pos == L_STACK_TOP)
 	{
 		px(l_stack, r_stack);
 		rx(r_stack);
 	}
-	else if (prime_num_pos == B_STACK_TOP)
+	else if (prime_num_pos == R_STACK_TOP)
 	{
 		rx(r_stack);
 	}
-	else if (prime_num_pos == A_STACK_REAR)
+	else if (prime_num_pos == L_STACK_REAR)
 	{
 		rrx(l_stack);
 		px(l_stack, r_stack);
 		rx(r_stack);
 	}
-	merge_number(l_stack, r_stack, status, len - 1);
+	merge_number(l_stack, r_stack, spec, len - 1);
 }
 
 t_run	merge_run(
-	t_ps_stack *a_stack,
-	t_ps_stack *b_stack,
-	int status
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack,
+	t_merge_action_spec *spec
 )
 {
 	t_run		ret;
-	const int	num_pos_status = status & NUM_POS_MASK;
 
-	if (num_pos_status == AAA || num_pos_status == AAD
-		|| num_pos_status == ADD || num_pos_status == DAA)
-		ret.ord = Ascending;
-	else
-		ret.ord = Descending;
-	if (num_pos_status == AAA || num_pos_status == DDD)
-		ret.len = ft_deque_run_pop_back(a_stack->runs).len
-			+ ft_deque_run_pop_back(b_stack->runs).len;
-	else if (num_pos_status == AAD || num_pos_status == DDA)
-		ret.len = ft_deque_run_pop_back(a_stack->runs).len
-			+ ft_deque_run_pop_back(b_stack->runs).len;
-	else if (num_pos_status == ADA || num_pos_status == DAD)
-		ret.len = ft_deque_run_pop_back(b_stack->runs).len
-			+ ft_deque_run_pop_front(a_stack->runs).len;
-	else
-		ret.len = ft_deque_run_pop_back(a_stack->runs).len
-			+ ft_deque_run_pop_front(a_stack->runs).len;
+	ret.ord = spec->target_ord;
+	ret.len = 0;
+	if (spec->pos_candidates & L_STACK_TOP)
+		ret.len += ft_deque_run_pop_back(l_stack->runs).len;
+	if (spec->pos_candidates & R_STACK_TOP)
+		ret.len += ft_deque_run_pop_back(r_stack->runs).len;
+	if (spec->pos_candidates & L_STACK_REAR)
+		ret.len += ft_deque_run_pop_front(l_stack->runs).len;
+	if (spec->pos_candidates & R_STACK_REAR)
+		ret.len += ft_deque_run_pop_front(r_stack->runs).len;
 	return (ret);
 }
 
 void	merge(
 	t_ps_stack *l_stack,
 	t_ps_stack *r_stack,
-	int	status
+	t_merge_action_spec	*spec
 )
 {
 	t_run	new_run;
-	new_run = merge_run(l_stack, r_stack, status);
+	new_run = merge_run(l_stack, r_stack, spec);
 	ft_deque_run_push_front(r_stack->runs, new_run);
-	merge_number(l_stack, r_stack, status, new_run.len);
+	merge_number(l_stack, r_stack, spec, new_run.len);
 }
 
 void	push_swap(
@@ -192,17 +195,19 @@ void	push_swap(
 )
 {
 	int			status;
+	t_merge_action_spec	spec;
 
 	if (ft_deque_run_len(l_stack->runs) <=  1)
 		return ;
 	status = get_ps_status(l_stack->runs, r_stack->runs);
+	spec = get_nomal_phase_merge_action_spec(status);
 	if (status & EMPTY)
 	{
 		push(l_stack, r_stack);
 	}
 	else
 	{
-		merge(l_stack, r_stack, status);
+		merge(l_stack, r_stack, &spec);
 	}
 	push_swap(l_stack, r_stack);
 }
