@@ -47,6 +47,30 @@ void	nums_to_int_stack(
 		ft_deque_run_push_back(stack->runs, run);
 	}
 }
+t_merge_action_spec	get_1run_per_stack_merge_action_spec(
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack
+)
+{
+	t_merge_action_spec	ret;
+	int top;
+	int rear;
+
+	ret = (t_merge_action_spec){0, Ascending, 0, 0};
+	top = peek_back_ft_deque_int(l_stack->numbers);
+	rear = peek_front_ft_deque_int(l_stack->numbers);
+	if (top < rear)
+		ret.pos_candidates |= L_STACK_TOP;
+	else
+	 	ret.pos_candidates |= L_STACK_REAR;
+	top = peek_back_ft_deque_int(l_stack->numbers);
+	rear = peek_front_ft_deque_int(r_stack->numbers);
+	if (top < rear)
+		ret.pos_candidates |= R_STACK_TOP;
+	else
+	 	ret.pos_candidates |= R_STACK_REAR;
+	return (ret);
+}
 
 int	main(int ac, char *av[])
 {
@@ -82,12 +106,13 @@ int	main(int ac, char *av[])
 	// push_swap(&a_stack, &b_stack);
 	// push_swap(&b_stack, &a_stack);
 	// int	len = ft_deque_int_len(b_stack.numbers) + ft_deque_int_len(a_stack.numbers);
-	// merge_final(&b_stack, &a_stack, len);
+	// get_1run_per_stack_merge_action_spec(&b_stack, &a_stack);
+	// merge(&a_stack, &b_stack, &spec);
 	n = 1;
 	i = -1;
 	while (++i < numbers.len && n != 0)
 	{
-		n = pop_front_ft_deque_int(&a_nums);
+		n = pop_front_ft_deque_int(&b_nums);
 		printf("%d \n", n);
 	}
 	n = 1;
@@ -95,7 +120,7 @@ int	main(int ac, char *av[])
 
 	while (++i < numbers.len && n != 0)
 	{
-		n = pop_front_ft_deque_int(&b_nums);
+		n = pop_front_ft_deque_int(&a_nums);
 		printf("%d \n", n);
 	}
 }

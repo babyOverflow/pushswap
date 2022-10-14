@@ -10,12 +10,13 @@ t_run	ft_deque_run_pop_back(t_deque_run *self)
 	{
 		return ((t_run){0, None});
 	}
-	ret = self->deque[--self->top];
-	if (self->top < 0)
+	ret = self->deque[self->top - 1];
+	if (self->top <= 0)
 	{
 		self->top = self->capa;
-		ret = self->deque[--self->top];
+		ret = self->deque[self->top - 1];
 	}
+	--self->top;
 	return (ret);
 }
 

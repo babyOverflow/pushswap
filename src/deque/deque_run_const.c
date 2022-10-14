@@ -9,7 +9,7 @@ t_run	ft_deque_run_peek_back(t_deque_run *self)
 		return ((t_run){0, None});
 	}
 	ret = self->deque[self->top - 1];
-	if (self->top < 0)
+	if (self->top <= 0)
 		ret = self->deque[self->capa - 1];
 	return (ret);
 }

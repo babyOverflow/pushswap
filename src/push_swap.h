@@ -17,6 +17,7 @@ enum e_order {
 	None
 };
 
+# define REST_OF_R_REAR_MASK 0b0111
 enum e_ps_prime_num_pos {
 	L_STACK_TOP = 0b1,
 	R_STACK_TOP = 0b10,
@@ -24,9 +25,11 @@ enum e_ps_prime_num_pos {
 	R_STACK_REAR = 0b1000
 };
 
-typedef struct s_target {
+typedef struct s_merge_action_spec {
 	enum e_ps_prime_num_pos	pos_candidates;
 	enum e_order			target_ord;
+	int						l_stack_candidate_num;
+	int						r_stack_candidate_num;
 }	t_merge_action_spec;
 
 typedef struct s_deque_int {

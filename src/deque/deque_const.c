@@ -9,7 +9,7 @@ int	peek_back_ft_deque_int(t_deque_int *self)
 		return (0);
 	}
 	ret = self->deque[self->top - 1];
-	if (self->top < 0)
+	if (self->top <= 0)
 		ret = self->deque[self->capa - 1];
 	return (ret);
 }
