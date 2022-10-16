@@ -55,10 +55,10 @@ t_deque_run	ft_deque_run_create(int size)
 {
 	t_deque_run	self;
 	
-	self.deque = (t_run *)malloc(sizeof(t_run) * size);
+	self.deque = (t_run *)malloc(sizeof(t_run) * (size + 1));
 	if (self.deque == NULL)
 		exit(-1);
-	self.capa = size;
+	self.capa = size + 1;
 	self.rear = 0;
 	self.top = 0;
 	return (self);

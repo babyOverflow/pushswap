@@ -1,5 +1,6 @@
 #include "parse.h"
 #include "push_swap.h"
+#include "ps_merge_action_spec.h"
 #include <stdio.h>
 
 #define DDD 0b111 // 7
@@ -31,7 +32,7 @@ void	nums_to_int_stack(
 
 	i = nums->len;
 	while (--i >= 0)
-		push_back_ft_deque_int(stack->numbers, nums->arr[i]);
+		push_back_ft_deque_int(stack->nums, nums->arr[i]);
 	i = nums->len;
 	while (--i >= 0)
 	{
@@ -53,22 +54,23 @@ t_merge_action_spec	get_1run_per_stack_merge_action_spec(
 )
 {
 	t_merge_action_spec	ret;
-	int top;
-	int rear;
+	const enum e_order	l_order = ft_deque_run_peek_back(l_stack->runs).ord;
+	const enum e_order	r_order = ft_deque_run_peek_back(r_stack->runs).ord;
 
 	ret = (t_merge_action_spec){0, Ascending, 0, 0};
-	top = peek_back_ft_deque_int(l_stack->numbers);
-	rear = peek_front_ft_deque_int(l_stack->numbers);
-	if (top < rear)
-		ret.pos_candidates |= L_STACK_TOP;
-	else
-	 	ret.pos_candidates |= L_STACK_REAR;
-	top = peek_back_ft_deque_int(l_stack->numbers);
-	rear = peek_front_ft_deque_int(r_stack->numbers);
-	if (top < rear)
-		ret.pos_candidates |= R_STACK_TOP;
-	else
-	 	ret.pos_candidates |= R_STACK_REAR;
+	if (l_order == Descending && r_order == Ascending)
+	{
+		psmaspec_set_left_rear_pos_on(&ret, l_stack);
+		psmaspec_set_right_top_pos_on(&ret, r_stack);
+		ret.target_ord = Ascending;
+	}
+	else if (l_order == Descending && r_order == Descending)
+	{
+
+	}
+	else {
+
+	}
 	return (ret);
 }
 
@@ -83,11 +85,11 @@ int	main(int ac, char *av[])
 	if (ac < 1)
 		return (0);
 	numbers = ps_parse(ac, av);
-	a_nums = ft_deque_int_create(numbers.len + 2);
-	b_nums = ft_deque_int_create(numbers.len + 2);
+	a_nums = ft_deque_int_create(numbers.len);
+	b_nums = ft_deque_int_create(numbers.len);
 
-	t_deque_run a_runs = ft_deque_run_create(numbers.len + 1);
-	t_deque_run b_runs = ft_deque_run_create(numbers.len + 1);
+	t_deque_run a_runs = ft_deque_run_create(numbers.len);
+	t_deque_run b_runs = ft_deque_run_create(numbers.len);
 
 	t_ps_stack	a_stack = {&a_nums, &a_runs, "a"};
 	t_ps_stack	b_stack = {&b_nums, &b_runs, "b"};
@@ -106,8 +108,8 @@ int	main(int ac, char *av[])
 	// push_swap(&a_stack, &b_stack);
 	// push_swap(&b_stack, &a_stack);
 	// int	len = ft_deque_int_len(b_stack.numbers) + ft_deque_int_len(a_stack.numbers);
-	// get_1run_per_stack_merge_action_spec(&b_stack, &a_stack);
-	// merge(&a_stack, &b_stack, &spec);
+	t_merge_action_spec spec = get_1run_per_stack_merge_action_spec(&b_stack, &a_stack);
+	merge(&b_stack, &a_stack, &spec);
 	n = 1;
 	i = -1;
 	while (++i < numbers.len && n != 0)

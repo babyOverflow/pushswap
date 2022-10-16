@@ -53,11 +53,11 @@ void	push_front_ft_deque_int(t_deque_int *self, int x)
 t_deque_int	ft_deque_int_create(int size)
 {
 	t_deque_int	self;
-	
-	self.deque = (int *)malloc(sizeof(int) * size);
+
+	self.deque = (int *)malloc(sizeof(int) * (size + 1));
 	if (self.deque == NULL)
 		exit(-1);
-	self.capa = size;
+	self.capa = size + 1;
 	self.rear = 0;
 	self.top = 0;
 	return (self);

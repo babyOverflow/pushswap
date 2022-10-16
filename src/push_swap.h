@@ -1,15 +1,18 @@
-#include <stdlib.h>
+#ifndef PUSH_SWAP_H
+# define PUSH_SWAP_H
 
-#define AAA 0b000
-#define AAD 0b001 
-#define ADA 0b010 
-#define ADD 0b011 
-#define DAA 0b100
-#define DAD 0b101
-#define DDA 0b110
-#define DDD 0b111
+# include <stdlib.h>
 
-#define EMPTY 0b1000
+# define AAA 0b000
+# define AAD 0b001 
+# define ADA 0b010 
+# define ADD 0b011 
+# define DAA 0b100
+# define DAD 0b101
+# define DDA 0b110
+# define DDD 0b111
+
+# define EMPTY 0b1000
 
 enum e_order {
 	Ascending = 0,
@@ -52,7 +55,7 @@ typedef struct s_deque_run {
 }	t_deque_run;
 
 typedef struct s_ps_stack {
-	t_deque_int	*numbers;
+	t_deque_int	*nums;
 	t_deque_run	*runs;
 	char		*name;
 }	t_ps_stack;
@@ -104,3 +107,11 @@ void	merge_final(
 	t_ps_stack *r_stack,
 	int len
 );
+
+void	merge_number(
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack,
+	t_merge_action_spec *spec,
+	int len
+);
+#endif
