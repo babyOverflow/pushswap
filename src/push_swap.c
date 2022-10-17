@@ -15,13 +15,14 @@ int	get_ps_status(
 	int	status;
 
 	if (ft_deque_run_peek_back(a_run).ord == None)
-		return (EMPTY | AAA);
+		return (EMPTY | AAAA);
 	if (ft_deque_run_peek_back(b_run).ord == None)
-		return (EMPTY | DDD);
+		return (EMPTY | DDDA);
 	status = 0;
-	status |= ft_deque_run_peek_back(a_run).ord << 2;
-	status |= ft_deque_run_peek_back(b_run).ord << 1;
-	status |= ft_deque_run_peek_front(a_run).ord << 0;
+	status |= ft_deque_run_peek_back(a_run).ord << 3;
+	status |= ft_deque_run_peek_back(b_run).ord << 2;
+	status |= ft_deque_run_peek_front(a_run).ord << 1;
+	status |= ft_deque_run_peek_front(b_run).ord << 0;
 	return (status);
 }
 
@@ -33,22 +34,26 @@ t_merge_action_spec get_normal_phase_merge_action_spec(
 )
 {
 	t_merge_action_spec	ret;
-	int			status;
+	int			state;
 	
-	status = get_ps_status(l_stack->runs, r_stack->runs);
+	state = get_ps_status(l_stack->runs, r_stack->runs);
 	ret = (t_merge_action_spec){
-		0, 0, Descending, 0, 0, 0, 0
+		0, R_STACK_REAR, Descending, 0, 0, 0, 0
 	};
-	if (status == AAA || status == AAD || status == ADD || status == DAD)
+	if (state == AAAA || state == AAAD || state == AADA || state == AADD
+		|| state == ADDA || state == ADDD || state == DADA || state == DADD)
 		ret.target_ord = Ascending;
 	else
-		status ^= PS_STACK_STATUS_TOGGLE_MASK;
-	if (status == AAA || status == AAD || status == ADD)
-		psmaspec_set_left_top_pos_on(&ret, l_stack);
-	if (status == AAA || status == AAD || status == DAD)
-		psmaspec_set_right_top_pos_on(&ret, r_stack);
-	if (status == ADD || status == DAD || status == AAD)
-		psmaspec_set_left_rear_pos_on(&ret, l_stack);
+	 	state ^= 0b1111;
+	if (state == AAAA || state == AAAD || state == AADA || state == AADD
+		|| state == ADDA || state == ADDD)
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+	if (state == AAAA || state == AAAD || state == AADA || state == AADD
+		|| state == DADA || state == DADD)
+		psmaspec_register_right_top_as_candidates(&ret, r_stack);
+	if (state == ADDA || state == ADDD || state == DADA || state == DADD)
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+
 	return (ret);
 }
 
@@ -74,19 +79,28 @@ t_run	merge_run(
 	t_merge_action_spec *spec
 )
 {
-	t_run		ret;
+	t_run		new_run;
 
-	ret.ord = spec->target_ord;
-	ret.len = 0;
+	new_run.ord = spec->target_ord;
+	new_run.len = 0;
 	if (spec->candidates_pos & L_STACK_TOP)
-		ret.len += ft_deque_run_pop_back(l_stack->runs).len;
+		new_run.len += ft_deque_run_pop_back(l_stack->runs).len;
 	if (spec->candidates_pos & R_STACK_TOP)
-		ret.len += ft_deque_run_pop_back(r_stack->runs).len;
+		new_run.len += ft_deque_run_pop_back(r_stack->runs).len;
 	if (spec->candidates_pos & L_STACK_REAR)
-		ret.len += ft_deque_run_pop_front(l_stack->runs).len;
+		new_run.len += ft_deque_run_pop_front(l_stack->runs).len;
 	if (spec->candidates_pos & R_STACK_REAR)
-		ret.len += ft_deque_run_pop_front(r_stack->runs).len;
-	return (ret);
+		new_run.len += ft_deque_run_pop_front(r_stack->runs).len;
+	(void)new_run;
+	if (spec->target_pos == R_STACK_REAR)
+		ft_deque_run_push_front(r_stack->runs, new_run);
+	else if (spec->target_pos == L_STACK_REAR)
+		ft_deque_run_push_front(l_stack->runs, new_run);
+	else if (spec->target_pos == R_STACK_TOP)
+		ft_deque_run_push_back(r_stack->runs, new_run);
+	else if (spec->target_pos == L_STACK_TOP)
+		ft_deque_run_push_back(l_stack->runs, new_run);
+	return (new_run);
 }
 
 void	merge(
@@ -96,8 +110,8 @@ void	merge(
 )
 {
 	t_run	new_run;
+
 	new_run = merge_run(l_stack, r_stack, spec);
-	ft_deque_run_push_front(r_stack->runs, new_run);
 	merge_number(l_stack, r_stack, spec, new_run.len);
 }
 
@@ -106,15 +120,16 @@ void	push_swap(
 	t_ps_stack *r_stack
 )
 {
-	int			status;
 	t_merge_action_spec	spec;
+	int					i = 0;
 
 	if (ft_deque_run_len(l_stack->runs) <=  1)
 		return ;
-	status = get_ps_status(l_stack->runs, r_stack->runs);
 	spec = get_normal_phase_merge_action_spec(l_stack, r_stack);
-	if (status & EMPTY)
+	if (spec.target_ord == None)
 	{
+		i = 0;
+		while (++i < 1 + ft_deque_run_len(l_stack->runs) / 4)
 		push(l_stack, r_stack);
 	}
 	else

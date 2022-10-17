@@ -3,16 +3,24 @@
 
 # include <stdlib.h>
 
-# define AAA 0b000
-# define AAD 0b001 
-# define ADA 0b010 
-# define ADD 0b011 
-# define DAA 0b100
-# define DAD 0b101
-# define DDA 0b110
-# define DDD 0b111
+# define AAAA 0b0000
+# define AADA 0b0010
+# define ADAA 0b0100
+# define ADDA 0b0110
+# define DAAA 0b1000
+# define DADA 0b1010
+# define DDAA 0b1100
+# define DDDA 0b1110
+# define AAAD 0b0001
+# define AADD 0b0011
+# define ADAD 0b0101
+# define ADDD 0b0111
+# define DAAD 0b1001
+# define DADD 0b1011
+# define DDAD 0b1101
+# define DDDD 0b1111
 
-# define EMPTY 0b1000
+# define EMPTY 0b10000
 
 enum e_order {
 	Ascending = 0,
@@ -90,7 +98,7 @@ void	rra(t_deque_int *a_stack, t_deque_int *b_stack);
 void	rrb(t_deque_int *a_stack, t_deque_int *b_stack);
 void	sa(t_deque_int *a_stack, t_deque_int *b_stack);
 void	sb(t_deque_int *a_stack, t_deque_int *b_stack);
-void	px(t_ps_stack *stack_dest, t_ps_stack *stack_src);
+void	px(t_ps_stack *stack_src, t_ps_stack *stack_dest);
 void	rx(t_ps_stack *x_stack);
 void	rrx(t_ps_stack *x_stack);
 

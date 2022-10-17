@@ -72,20 +72,38 @@ enum e_ps_prime_num_pos	get_be_poped_num_pos(
 {
 	int			prime_num_pos;
 
-	if (spec->target_ord == Ascending)
-		prime_num_pos = ps_min_num_pos(l_stack->nums, r_stack->nums, spec);
+	if (spec->target_pos == L_STACK_REAR || spec->target_pos == R_STACK_REAR)
+	{
+		if (spec->target_ord == Ascending)
+			prime_num_pos = ps_min_num_pos(l_stack->nums, r_stack->nums, spec);
+		else
+			prime_num_pos = ps_max_num_pos(l_stack->nums, r_stack->nums, spec);
+	}
 	else
-		prime_num_pos = ps_max_num_pos(l_stack->nums, r_stack->nums, spec);
+	{
+		if (spec->target_ord == Ascending)
+			prime_num_pos = ps_max_num_pos(l_stack->nums, r_stack->nums, spec);
+		else
+			prime_num_pos = ps_min_num_pos(l_stack->nums, r_stack->nums, spec);
+	}
 	return (prime_num_pos);
 }
+
 void	handle_pos_left_top(
 	t_ps_stack *l_stack,
 	t_ps_stack *r_stack,
 	t_merge_action_spec *spec
 )
 {
-	px(l_stack, r_stack);
-	rx(r_stack);
+	if (spec->target_pos == R_STACK_REAR)
+	{
+		px(l_stack, r_stack);
+		rx(r_stack);
+	}
+	else if (spec->target_pos == R_STACK_TOP)
+	{
+		px(l_stack, r_stack);
+	}
 	spec->l_stack_top_candidate_num -= 1;
 }
 
@@ -96,7 +114,10 @@ void	handle_pos_right_top(
 )
 {
 	(void)l_stack;
-	rx(r_stack);
+	if (spec->target_pos == R_STACK_REAR)
+		rx(r_stack);
+	else if (spec->target_pos == L_STACK_TOP)
+		px(r_stack, l_stack);
 	spec->r_stack_top_candidate_num -= 1;
 }
 
@@ -106,9 +127,21 @@ void	handle_pos_left_rear(
 	t_merge_action_spec *spec
 )
 {
-	rrx(l_stack);
-	px(l_stack, r_stack);
-	rx(r_stack);
+	if (spec->target_pos == R_STACK_REAR)
+	{
+		rrx(l_stack);
+		px(l_stack, r_stack);
+		rx(r_stack);
+	}
+	else if (spec->target_pos == L_STACK_TOP)
+	{
+		rrx(l_stack);
+	}
+	else if (spec->target_pos == R_STACK_TOP)
+	{
+		rrx(l_stack);
+		px(l_stack, r_stack);
+	}
 	spec->l_stack_rear_candidate_num -= 1;
 }
 
@@ -118,11 +151,12 @@ void	handle_pos_right_rear(
 	t_merge_action_spec *spec
 )
 {
-	t_merge_action_spec	temp_spec;
-
-	temp_spec = *spec;
-	temp_spec.candidates_pos ^= R_STACK_REAR;
-	merge_number(l_stack, r_stack, spec, 1);
+	(void)l_stack;
+	if (spec->target_pos == R_STACK_TOP)
+	{
+		rrx(r_stack);
+	}
+	spec->r_stack_rear_candidate_num -= 1;
 }
 
 void	merge_number(

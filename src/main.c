@@ -60,20 +60,20 @@ t_merge_action_spec	get_1run_per_stack_merge_action_spec(
 	ret = (t_merge_action_spec){0, 0, Ascending, 0, 0, 0, 0};
 	if (l_order == Descending && r_order == Ascending)
 	{
-		psmaspec_set_left_rear_pos_on(&ret, l_stack);
-		psmaspec_set_right_top_pos_on(&ret, r_stack);
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+		psmaspec_register_right_top_as_candidates(&ret, r_stack);
 		ret.target_ord = Ascending;
 	}
 	else if (l_order == Descending && r_order == Descending)
 	{
-		psmaspec_set_left_rear_pos_on(&ret, l_stack);
-		psmaspec_set_left_top_pos_on(&ret, l_stack);
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
 		ret.target_ord = Ascending;
 	}
 	else if (l_order == Ascending && r_order == Ascending)
 	{
-		psmaspec_set_left_top_pos_on(&ret, l_stack);
-		psmaspec_set_right_top_pos_on(&ret, r_stack);
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_right_top_as_candidates(&ret, r_stack);
 		ret.target_ord = Ascending;
 	}
 	else {
@@ -116,28 +116,28 @@ int	main(int ac, char *av[])
 	// push_swap(&a_stack, &b_stack);
 	// push_swap(&b_stack, &a_stack);
 	// int	len = ft_deque_int_len(b_stack.numbers) + ft_deque_int_len(a_stack.numbers);
-	t_merge_action_spec spec = get_1run_per_stack_merge_action_spec(&b_stack, &a_stack);
-	if (spec.candidates_pos != 0)
-		merge(&b_stack, &a_stack, &spec);
-	else 
+	// t_merge_action_spec spec = get_1run_per_stack_merge_action_spec(&b_stack, &a_stack);
+	// if (spec.candidates_pos != 0)
+	// 	merge(&b_stack, &a_stack, &spec);
+	// else 
 	{
 		// push(&a_stack, &b_stack);
 		// merge(&b_stack, &a_stack, &spec);
 	};
 
-	// n = 1;
-	// i = -1;
-	// while (++i < numbers.len && n != 0)
-	// {
-	// 	n = pop_front_ft_deque_int(&b_nums);
-	// 	printf("%d \n", n);
-	// }
-	// n = 1;
-	// i = -1;
+	n = 1;
+	i = -1;
+	while (++i < numbers.len && n != 0)
+	{
+		n = pop_front_ft_deque_int(&b_nums);
+		printf("%d \n", n);
+	}
+	n = 1;
+	i = -1;
 
-	// while (++i < numbers.len && n != 0)
-	// {
-	// 	n = pop_front_ft_deque_int(&a_nums);
-	// 	printf("%d \n", n);
-	// }
+	while (++i < numbers.len && n != 0)
+	{
+		n = pop_front_ft_deque_int(&a_nums);
+		printf("%d \n", n);
+	}
 }
