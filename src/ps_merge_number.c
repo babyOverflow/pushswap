@@ -86,7 +86,7 @@ void	handle_pos_left_top(
 {
 	px(l_stack, r_stack);
 	rx(r_stack);
-	spec->l_stack_candidate_num -= 1;
+	spec->l_stack_top_candidate_num -= 1;
 }
 
 void	handle_pos_right_top(
@@ -97,7 +97,7 @@ void	handle_pos_right_top(
 {
 	(void)l_stack;
 	rx(r_stack);
-	spec->r_stack_candidate_num -= 1;
+	spec->r_stack_top_candidate_num -= 1;
 }
 
 void	handle_pos_left_rear(
@@ -109,7 +109,7 @@ void	handle_pos_left_rear(
 	rrx(l_stack);
 	px(l_stack, r_stack);
 	rx(r_stack);
-	spec->l_stack_candidate_num -= 1;
+	spec->l_stack_rear_candidate_num -= 1;
 }
 
 void	handle_pos_right_rear(
@@ -121,7 +121,7 @@ void	handle_pos_right_rear(
 	t_merge_action_spec	temp_spec;
 
 	temp_spec = *spec;
-	temp_spec.pos_candidates ^= R_STACK_REAR;
+	temp_spec.candidates_pos ^= R_STACK_REAR;
 	merge_number(l_stack, r_stack, spec, 1);
 }
 

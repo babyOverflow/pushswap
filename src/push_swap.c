@@ -37,7 +37,7 @@ t_merge_action_spec get_normal_phase_merge_action_spec(
 	
 	status = get_ps_status(l_stack->runs, r_stack->runs);
 	ret = (t_merge_action_spec){
-		0, Descending, 0, 0
+		0, 0, Descending, 0, 0, 0, 0
 	};
 	if (status == AAA || status == AAD || status == ADD || status == DAD)
 		ret.target_ord = Ascending;
@@ -47,7 +47,7 @@ t_merge_action_spec get_normal_phase_merge_action_spec(
 		psmaspec_set_left_top_pos_on(&ret, l_stack);
 	if (status == AAA || status == AAD || status == DAD)
 		psmaspec_set_right_top_pos_on(&ret, r_stack);
-	if (status == ADD || status == DAD)
+	if (status == ADD || status == DAD || status == AAD)
 		psmaspec_set_left_rear_pos_on(&ret, l_stack);
 	return (ret);
 }
@@ -78,13 +78,13 @@ t_run	merge_run(
 
 	ret.ord = spec->target_ord;
 	ret.len = 0;
-	if (spec->pos_candidates & L_STACK_TOP)
+	if (spec->candidates_pos & L_STACK_TOP)
 		ret.len += ft_deque_run_pop_back(l_stack->runs).len;
-	if (spec->pos_candidates & R_STACK_TOP)
+	if (spec->candidates_pos & R_STACK_TOP)
 		ret.len += ft_deque_run_pop_back(r_stack->runs).len;
-	if (spec->pos_candidates & L_STACK_REAR)
+	if (spec->candidates_pos & L_STACK_REAR)
 		ret.len += ft_deque_run_pop_front(l_stack->runs).len;
-	if (spec->pos_candidates & R_STACK_REAR)
+	if (spec->candidates_pos & R_STACK_REAR)
 		ret.len += ft_deque_run_pop_front(r_stack->runs).len;
 	return (ret);
 }

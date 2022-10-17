@@ -29,10 +29,13 @@ enum e_ps_prime_num_pos {
 };
 
 typedef struct s_merge_action_spec {
-	enum e_ps_prime_num_pos	pos_candidates;
+	enum e_ps_prime_num_pos	candidates_pos;
+	enum e_ps_prime_num_pos	target_pos;
 	enum e_order			target_ord;
-	int						l_stack_candidate_num;
-	int						r_stack_candidate_num;
+	int						l_stack_top_candidate_num;
+	int						r_stack_top_candidate_num;
+	int						l_stack_rear_candidate_num;
+	int						r_stack_rear_candidate_num;
 }	t_merge_action_spec;
 
 typedef struct s_deque_int {
@@ -114,4 +117,6 @@ void	merge_number(
 	t_merge_action_spec *spec,
 	int len
 );
+
+void	push(t_ps_stack *l_stack, t_ps_stack *r_stack);
 #endif
