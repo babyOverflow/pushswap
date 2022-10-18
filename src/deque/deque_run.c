@@ -2,7 +2,7 @@
 #include "push_swap.h"
 
 
-t_run	ft_deque_run_pop_back(t_deque_run *self)
+t_run	pop_back_ft_deque_run(t_deque_run *self)
 {
 	t_run	ret;
 
@@ -20,7 +20,7 @@ t_run	ft_deque_run_pop_back(t_deque_run *self)
 	return (ret);
 }
 
-t_run	ft_deque_run_pop_front(t_deque_run *self)
+t_run	pop_front_ft_deque_run(t_deque_run *self)
 {
 	t_run	ret;
 
@@ -37,14 +37,14 @@ t_run	ft_deque_run_pop_front(t_deque_run *self)
 	return (ret);
 }
 
-void	ft_deque_run_push_back(t_deque_run *self, t_run x)
+void	push_back_ft_deque_run(t_deque_run *self, t_run x)
 {
 	self->deque[self->top++] = x;
 	if (self->top >= self->capa)
 		self->top = 0;
 }
 
-void	ft_deque_run_push_front(t_deque_run *self, t_run x)
+void	push_front_ft_deque_run(t_deque_run *self, t_run x)
 {
 	if (--self->rear < 0)
 		self->rear = self->capa - 1;

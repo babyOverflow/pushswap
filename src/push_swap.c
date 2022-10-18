@@ -14,15 +14,15 @@ int	get_ps_status(
 {
 	int	status;
 
-	if (ft_deque_run_peek_back(a_run).ord == None)
+	if (peek_back_ft_deque_run(a_run).ord == None)
 		return (EMPTY | AAAA);
-	if (ft_deque_run_peek_back(b_run).ord == None)
+	if (peek_back_ft_deque_run(b_run).ord == None)
 		return (EMPTY | DDDA);
 	status = 0;
-	status |= ft_deque_run_peek_back(a_run).ord << 3;
-	status |= ft_deque_run_peek_back(b_run).ord << 2;
-	status |= ft_deque_run_peek_front(a_run).ord << 1;
-	status |= ft_deque_run_peek_front(b_run).ord << 0;
+	status |= peek_back_ft_deque_run(a_run).ord << 3;
+	status |= peek_back_ft_deque_run(b_run).ord << 2;
+	status |= peek_front_ft_deque_run(a_run).ord << 1;
+	status |= peek_front_ft_deque_run(b_run).ord << 0;
 	return (status);
 }
 
@@ -113,14 +113,14 @@ void	push(t_ps_stack *l_stack, t_ps_stack *r_stack)
 	t_run	new_run;
 	int		i;
 
-	new_run = ft_deque_run_pop_back(l_stack->runs);
+	new_run = pop_back_ft_deque_run(l_stack->runs);
 	new_run = (t_run){new_run.len, new_run.ord ^ 1};
 	i = -1;
 	while (++i < new_run.len)
 	{
 		px(l_stack, r_stack);
 	}
-	ft_deque_run_push_back(r_stack->runs, new_run);
+	push_back_ft_deque_run(r_stack->runs, new_run);
 }
 
 
@@ -135,22 +135,22 @@ t_run	merge_run(
 	new_run.ord = spec->target_ord;
 	new_run.len = 0;
 	if (spec->candidates_pos & L_STACK_TOP)
-		new_run.len += ft_deque_run_pop_back(l_stack->runs).len;
+		new_run.len += pop_back_ft_deque_run(l_stack->runs).len;
 	if (spec->candidates_pos & R_STACK_TOP)
-		new_run.len += ft_deque_run_pop_back(r_stack->runs).len;
+		new_run.len += pop_back_ft_deque_run(r_stack->runs).len;
 	if (spec->candidates_pos & L_STACK_REAR)
-		new_run.len += ft_deque_run_pop_front(l_stack->runs).len;
+		new_run.len += pop_front_ft_deque_run(l_stack->runs).len;
 	if (spec->candidates_pos & R_STACK_REAR)
-		new_run.len += ft_deque_run_pop_front(r_stack->runs).len;
+		new_run.len += pop_front_ft_deque_run(r_stack->runs).len;
 	(void)new_run;
 	if (spec->target_pos == R_STACK_REAR)
-		ft_deque_run_push_front(r_stack->runs, new_run);
+		push_front_ft_deque_run(r_stack->runs, new_run);
 	else if (spec->target_pos == L_STACK_REAR)
-		ft_deque_run_push_front(l_stack->runs, new_run);
+		push_front_ft_deque_run(l_stack->runs, new_run);
 	else if (spec->target_pos == R_STACK_TOP)
-		ft_deque_run_push_back(r_stack->runs, new_run);
+		push_back_ft_deque_run(r_stack->runs, new_run);
 	else if (spec->target_pos == L_STACK_TOP)
-		ft_deque_run_push_back(l_stack->runs, new_run);
+		push_back_ft_deque_run(l_stack->runs, new_run);
 	return (new_run);
 }
 

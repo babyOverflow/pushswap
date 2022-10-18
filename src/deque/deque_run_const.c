@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-t_run	ft_deque_run_peek_back(t_deque_run *self)
+t_run	peek_back_ft_deque_run(t_deque_run *self)
 {
 	t_run	ret;
 
@@ -14,7 +14,7 @@ t_run	ft_deque_run_peek_back(t_deque_run *self)
 	return (ret);
 }
 
-t_run	ft_deque_run_peek_front(t_deque_run *self)
+t_run	peek_front_ft_deque_run(t_deque_run *self)
 {
 	t_run	ret;
 
