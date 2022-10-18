@@ -38,22 +38,73 @@ t_merge_action_spec get_normal_phase_merge_action_spec(
 	
 	state = get_ps_status(l_stack->runs, r_stack->runs);
 	ret = (t_merge_action_spec){
-		0, R_STACK_REAR, Descending, 0, 0, 0, 0
+		0, R_STACK_REAR, None, 0, 0, 0, 0
 	};
-	if (state == AAAA || state == AAAD || state == AADA || state == AADD
-		|| state == ADDA || state == ADDD || state == DADA || state == DADD)
-		ret.target_ord = Ascending;
-	else
-	 	state ^= 0b1111;
-	if (state == AAAA || state == AAAD || state == AADA || state == AADD
-		|| state == ADDA || state == ADDD)
-		psmaspec_register_left_top_as_candidates(&ret, l_stack);
-	if (state == AAAA || state == AAAD || state == AADA || state == AADD
-		|| state == DADA || state == DADD)
-		psmaspec_register_right_top_as_candidates(&ret, r_stack);
-	if (state == ADDA || state == ADDD || state == DADA || state == DADD)
+	if (state == AADA || state == AADD)
+	{
 		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
-
+		// psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_right_top_as_candidates(&ret, r_stack);
+		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_REAR;
+	}
+	else if (state == DDAD || state == DDAA)
+	{
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+		// psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_right_top_as_candidates(&ret, r_stack);
+		ret.target_ord = Descending;
+		ret.target_pos = R_STACK_REAR;
+	}
+	// else if (state == AAAA || state == AAAD)
+	// {
+	// 	psmaspec_register_left_top_as_candidates(&ret, l_stack);
+	// 	psmaspec_register_right_top_as_candidates(&ret, r_stack);
+	// 	ret.target_ord = Ascending;
+	// 	ret.target_pos = R_STACK_REAR;
+	// }
+	// else if (state == DDDA || state == DDDD)
+	// {
+	// 	psmaspec_register_left_top_as_candidates(&ret, l_stack);
+	// 	psmaspec_register_right_top_as_candidates(&ret, r_stack);
+	// 	ret.target_ord = Descending;
+	// 	ret.target_pos = R_STACK_REAR;
+	// }
+	else if (state == ADAD)
+	{
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_right_rear_as_candidates(&ret, r_stack);
+		ret.target_ord = Descending;
+		ret.target_pos = R_STACK_TOP;
+	}
+	else if (state == ADAA)// || state == ADAD)
+	{
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+		psmaspec_register_right_top_as_candidates(&ret, r_stack);
+		ret.target_ord = Descending;
+		ret.target_pos = R_STACK_REAR;
+	}
+	else if (state == DADD || state == DADA)
+	{
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+		psmaspec_register_right_top_as_candidates(&ret, r_stack);
+		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_REAR;
+	}
+	else if (state == ADDA || state == ADDD)
+	{
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		ret.target_ord = Descending;
+		ret.target_pos = R_STACK_TOP;
+	}
+	else if (state == DAAD || state == DAAA)
+	{
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_TOP;
+	}
 	return (ret);
 }
 
@@ -121,15 +172,12 @@ void	push_swap(
 )
 {
 	t_merge_action_spec	spec;
-	int					i = 0;
 
 	if (ft_deque_run_len(l_stack->runs) <=  1)
 		return ;
 	spec = get_normal_phase_merge_action_spec(l_stack, r_stack);
 	if (spec.target_ord == None)
 	{
-		i = 0;
-		while (++i < 1 + ft_deque_run_len(l_stack->runs) / 4)
 		push(l_stack, r_stack);
 	}
 	else

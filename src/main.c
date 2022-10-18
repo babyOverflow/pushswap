@@ -49,37 +49,89 @@ void	nums_to_int_stack(
 	}
 }
 t_merge_action_spec	get_1run_per_stack_merge_action_spec(
-	t_ps_stack *l_stack,
-	t_ps_stack *r_stack
+	t_ps_stack *b_stack,
+	t_ps_stack *a_stack
 )
 {
 	t_merge_action_spec	ret;
-	const enum e_order	l_order = ft_deque_run_peek_back(l_stack->runs).ord;
-	const enum e_order	r_order = ft_deque_run_peek_back(r_stack->runs).ord;
+	const enum e_order	b_order = ft_deque_run_peek_back(b_stack->runs).ord;
+	const enum e_order	a_order = ft_deque_run_peek_back(a_stack->runs).ord;
 
-	ret = (t_merge_action_spec){0, 0, Ascending, 0, 0, 0, 0};
-	if (l_order == Descending && r_order == Ascending)
+	ret = (t_merge_action_spec){0, 0, None, 0, 0, 0, 0};
+	if (b_order == Descending && a_order == Ascending)
 	{
-		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
-		psmaspec_register_right_top_as_candidates(&ret, r_stack);
+		psmaspec_register_left_rear_as_candidates(&ret, b_stack);
+		psmaspec_register_right_top_as_candidates(&ret, a_stack);
 		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_REAR;
 	}
-	else if (l_order == Descending && r_order == Descending)
+	else if (b_order == Descending && a_order == Descending)
 	{
-		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
-		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		push(a_stack, b_stack);
+		psmaspec_register_left_rear_as_candidates(&ret, b_stack);
+		psmaspec_register_left_top_as_candidates(&ret, b_stack);
 		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_REAR;
 	}
-	else if (l_order == Ascending && r_order == Ascending)
+	else if (b_order == Ascending && a_order == Ascending)
 	{
-		psmaspec_register_left_top_as_candidates(&ret, l_stack);
-		psmaspec_register_right_top_as_candidates(&ret, r_stack);
+		psmaspec_register_left_top_as_candidates(&ret, b_stack);
+		psmaspec_register_right_top_as_candidates(&ret, a_stack);
 		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_REAR;
 	}
-	else {
-
+	else if (b_order == Ascending && a_order == Descending)
+	{
+		psmaspec_register_left_rear_as_candidates(&ret, b_stack);
+		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_TOP;
+		merge(a_stack, b_stack, &ret);
+		ret = (t_merge_action_spec){0, 0, None, 0, 0, 0, 0};
+		psmaspec_register_left_rear_as_candidates(&ret, b_stack);
+		psmaspec_register_left_top_as_candidates(&ret, b_stack);
+		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_TOP;
 	}
 	return (ret);
+}
+
+enum e_order	determin(len, i, order)
+{
+	int numerator;
+
+	numerator = len / 3;
+	if (numerator < 3)
+	{
+		if (i == 0)
+			return order ^ order;
+		else if ( i == 1)
+			return order ^ 1;
+		else
+		 	return order ^ order ^ 1;
+	}
+	if (numerator > i)
+		return determin(numerator, i, order ^ order);
+	else if (2 * numerator > i)
+		return determin(numerator, i - numerator, order ^ 1);
+	else if (3 * numerator > i)
+		return determin(len - (2 * numerator), i - numerator * 2, order ^ order ^ 1);
+	else
+	 	return determin(len - (3 * numerator), i - numerator * 3, order);
+}
+
+void	push_ordered(t_ps_stack *a_stack, t_ps_stack *b_stack)
+{
+	int	i;
+	int j;
+	enum e_order	target_order;
+	const int		len = ft_deque_int_len(a_stack->nums);
+	t_run			run;
+
+	i = -1;
+	while (++i < len)
+	{
+		target_order = determin(len, i, Ascending);
+	}
 }
 
 int	main(int ac, char *av[])
@@ -104,40 +156,42 @@ int	main(int ac, char *av[])
 	nums_to_int_stack(&numbers, &a_stack);
 
 
+	// i = -1;
+	// while (++i < ft_deque_run_len(&a_runs) / 2 + 1)
+	// {
+	// 	push(&a_stack, &b_stack);
+	// }
 	while (1)
 	{
-		push_swap(&a_stack, &b_stack);
-		if (ft_deque_run_len(b_stack.runs) <= 1)
-			break ;
 		push_swap(&b_stack, &a_stack);
 		if (ft_deque_run_len(a_stack.runs) <= 1)
+			break ;
+		push_swap(&a_stack, &b_stack);
+		if (ft_deque_run_len(b_stack.runs) <= 1)
 			break ;
 	}
 	// push_swap(&a_stack, &b_stack);
 	// push_swap(&b_stack, &a_stack);
 	// int	len = ft_deque_int_len(b_stack.numbers) + ft_deque_int_len(a_stack.numbers);
-	// t_merge_action_spec spec = get_1run_per_stack_merge_action_spec(&b_stack, &a_stack);
-	// if (spec.candidates_pos != 0)
-	// 	merge(&b_stack, &a_stack, &spec);
-	// else 
-	{
-		// push(&a_stack, &b_stack);
-		// merge(&b_stack, &a_stack, &spec);
-	};
+	t_merge_action_spec spec = get_1run_per_stack_merge_action_spec(&b_stack, &a_stack);
+	if (spec.target_ord != None)
+		merge(&b_stack, &a_stack, &spec);
+	else
+	 	push(&b_stack, &a_stack);
 
-	n = 1;
-	i = -1;
-	while (++i < numbers.len && n != 0)
-	{
-		n = pop_front_ft_deque_int(&b_nums);
-		printf("%d \n", n);
-	}
-	n = 1;
-	i = -1;
+	// n = 1;
+	// i = -1;
+	// while (++i < numbers.len && n != 0)
+	// {
+	// 	n = pop_front_ft_deque_int(&b_nums);
+	// 	printf("%d \n", n);
+	// }
 
-	while (++i < numbers.len && n != 0)
-	{
-		n = pop_front_ft_deque_int(&a_nums);
-		printf("%d \n", n);
-	}
+	// n = 1;
+	// i = -1;
+	// while (++i < numbers.len && n != 0)
+	// {
+	// 	n = pop_front_ft_deque_int(&a_nums);
+	// 	printf("%d \n", n);
+	// }
 }
