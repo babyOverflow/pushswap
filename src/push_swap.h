@@ -40,6 +40,7 @@ typedef struct s_merge_action_spec {
 	enum e_ps_prime_num_pos	candidates_pos;
 	enum e_ps_prime_num_pos	target_pos;
 	enum e_order			target_ord;
+	int						target_len;
 	int						l_stack_top_candidate_num;
 	int						r_stack_top_candidate_num;
 	int						l_stack_rear_candidate_num;
@@ -90,14 +91,7 @@ t_run		peek_back_ft_deque_run(t_deque_run *self);
 t_run		peek_front_ft_deque_run(t_deque_run *self);
 int			ft_deque_run_len(t_deque_run *self);
 
-void	ra(t_deque_int *a_stack, t_deque_int *b_stack);
-void	rb(t_deque_int *a_stack, t_deque_int *b_stack);
-void	pa(t_deque_int *a_stack, t_deque_int *b_stack);
-void	pb(t_deque_int *a_stack, t_deque_int *b_stack);
-void	rra(t_deque_int *a_stack, t_deque_int *b_stack);
-void	rrb(t_deque_int *a_stack, t_deque_int *b_stack);
-void	sa(t_deque_int *a_stack, t_deque_int *b_stack);
-void	sb(t_deque_int *a_stack, t_deque_int *b_stack);
+void	sx(t_ps_stack *x_stack);
 void	px(t_ps_stack *stack_src, t_ps_stack *stack_dest);
 void	rx(t_ps_stack *x_stack);
 void	rrx(t_ps_stack *x_stack);
@@ -126,5 +120,15 @@ void	merge_number(
 	int len
 );
 
-void	push(t_ps_stack *l_stack, t_ps_stack *r_stack);
+enum e_ps_prime_num_pos	get_prime_num_pos(
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack,
+	t_merge_action_spec *spec
+);
+
+void	push(
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack,
+	t_merge_action_spec *spec
+);
 #endif

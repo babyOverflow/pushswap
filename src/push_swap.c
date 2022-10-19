@@ -38,12 +38,12 @@ t_merge_action_spec get_normal_phase_merge_action_spec(
 	
 	state = get_ps_status(l_stack->runs, r_stack->runs);
 	ret = (t_merge_action_spec){
-		0, R_STACK_REAR, None, 0, 0, 0, 0
+		0, R_STACK_REAR, None, 0, 0, 0, 0, 0
 	};
 	if (state == AADA || state == AADD)
 	{
 		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
-		// psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
 		psmaspec_register_right_top_as_candidates(&ret, r_stack);
 		ret.target_ord = Ascending;
 		ret.target_pos = R_STACK_REAR;
@@ -51,25 +51,25 @@ t_merge_action_spec get_normal_phase_merge_action_spec(
 	else if (state == DDAD || state == DDAA)
 	{
 		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
-		// psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
 		psmaspec_register_right_top_as_candidates(&ret, r_stack);
 		ret.target_ord = Descending;
 		ret.target_pos = R_STACK_REAR;
 	}
-	// else if (state == AAAA || state == AAAD)
-	// {
-	// 	psmaspec_register_left_top_as_candidates(&ret, l_stack);
-	// 	psmaspec_register_right_top_as_candidates(&ret, r_stack);
-	// 	ret.target_ord = Ascending;
-	// 	ret.target_pos = R_STACK_REAR;
-	// }
-	// else if (state == DDDA || state == DDDD)
-	// {
-	// 	psmaspec_register_left_top_as_candidates(&ret, l_stack);
-	// 	psmaspec_register_right_top_as_candidates(&ret, r_stack);
-	// 	ret.target_ord = Descending;
-	// 	ret.target_pos = R_STACK_REAR;
-	// }
+	else if (state == AAAA || state == AAAD)
+	{
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_right_top_as_candidates(&ret, r_stack);
+		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_REAR;
+	}
+	else if (state == DDDA || state == DDDD)
+	{
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_right_top_as_candidates(&ret, r_stack);
+		ret.target_ord = Descending;
+		ret.target_pos = R_STACK_REAR;
+	}
 	else if (state == ADAD)
 	{
 		psmaspec_register_left_top_as_candidates(&ret, l_stack);
@@ -108,19 +108,52 @@ t_merge_action_spec get_normal_phase_merge_action_spec(
 	return (ret);
 }
 
-void	push(t_ps_stack *l_stack, t_ps_stack *r_stack)
+void	bubble_down(t_ps_stack *stack, int depth, enum e_order ord)
 {
-	t_run	new_run;
-	int		i;
+	int	top;
+	int	under_top;
+	if (depth <= 0)
+		return ;
+	top = pop_back_ft_deque_int(stack->nums);
+	under_top = peek_back_ft_deque_int(stack->nums);
+	push_back_ft_deque_int(stack->nums, top);
+	if ((ord == Ascending && top < under_top) ||
+		(ord == Descending && top > under_top))
+		return ;
+	sx(stack);
+	rx(stack);
+	bubble_down(stack, depth - 1, ord);
+	rrx(stack);
+}
 
-	new_run = pop_back_ft_deque_run(l_stack->runs);
-	new_run = (t_run){new_run.len, new_run.ord ^ 1};
+void	push(
+	t_ps_stack *l_stack,
+	t_ps_stack *r_stack,
+	t_merge_action_spec *spec
+)
+{
+	int						i;
+	enum e_ps_prime_num_pos	prime_num_pos;
+	const t_merge_action_spec	only_push = {
+		L_STACK_TOP, R_STACK_TOP,
+		peek_back_ft_deque_run(l_stack->runs).ord ^ 1,
+		peek_back_ft_deque_run(l_stack->runs).len, 1, 0, 0, 0, 
+	};
+
 	i = -1;
-	while (++i < new_run.len)
+	if (spec == NULL)
 	{
-		px(l_stack, r_stack);
+		spec = (t_merge_action_spec *)&only_push;
 	}
-	push_back_ft_deque_run(r_stack->runs, new_run);
+	while (++i < spec->target_len)
+	{
+		prime_num_pos = get_prime_num_pos(l_stack, r_stack, spec);
+		if (prime_num_pos == L_STACK_REAR)
+			rrx(l_stack);
+		px(l_stack, r_stack);
+		if (spec != &only_push)
+			bubble_down(r_stack, i, spec->target_ord);
+	}
 }
 
 
@@ -172,13 +205,23 @@ void	push_swap(
 )
 {
 	t_merge_action_spec	spec;
+	t_run				tmp_run;
+	int					i;
+	const int			len = ft_deque_run_len(l_stack->runs);
 
-	if (ft_deque_run_len(l_stack->runs) <=  1)
+
+	if (ft_deque_run_len(l_stack->runs) <=  0)
 		return ;
 	spec = get_normal_phase_merge_action_spec(l_stack, r_stack);
 	if (spec.target_ord == None)
 	{
-		push(l_stack, r_stack);
+		i = -1;
+		while (++i < len / 3)
+		{
+			push(l_stack, r_stack, NULL);
+			push_back_ft_deque_run(r_stack->runs,
+				pop_back_ft_deque_run(l_stack->runs));
+		}
 	}
 	else
 	{

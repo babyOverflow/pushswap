@@ -64,7 +64,7 @@ enum e_ps_prime_num_pos	ps_max_num_pos(
 	return (ret);
 }
 
-enum e_ps_prime_num_pos	get_be_poped_num_pos(
+enum e_ps_prime_num_pos	get_prime_num_pos(
 	t_ps_stack *l_stack,
 	t_ps_stack *r_stack,
 	t_merge_action_spec *spec
@@ -168,7 +168,7 @@ void	merge_number(
 {
 	enum e_ps_prime_num_pos		prime_num_pos;
 
-	prime_num_pos = get_be_poped_num_pos(l_stack, r_stack, spec);
+	prime_num_pos = get_prime_num_pos(l_stack, r_stack, spec);
 	if (len < 1)
 		return ;
 	if (prime_num_pos == L_STACK_TOP)
