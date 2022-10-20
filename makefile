@@ -3,9 +3,9 @@ SRC_DIR := src
 OBJ_DIR := obj
 
 SRC := main.c parse.c parse_utils.c push_swap.c ps_commands.c \
-	deque/deque.c deque/deque_const.c \
-	deque/deque_run.c deque/deque_run_const.c
-
+	deque/deque_int.c deque/deque_int_const.c \
+	deque/deque_run.c deque/deque_run_const.c \
+	ps_merge_action_spec.c ps_merge_number.c
 SRC := $(SRC:%.c=$(SRC_DIR)/%.c)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

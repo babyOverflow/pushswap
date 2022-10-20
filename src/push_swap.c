@@ -219,8 +219,9 @@ void	push_swap(
 		while (++i < len / 3)
 		{
 			push(l_stack, r_stack, NULL);
-			push_back_ft_deque_run(r_stack->runs,
-				pop_back_ft_deque_run(l_stack->runs));
+			tmp_run = pop_back_ft_deque_run(l_stack->runs);
+			tmp_run.ord ^= 1;
+			push_back_ft_deque_run(r_stack->runs, tmp_run);
 		}
 	}
 	else

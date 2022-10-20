@@ -53,20 +53,20 @@ int	recur(t_ps_stack *stack, t_ps_stack *temp_stack, int run_size)
 		push_front_ft_deque_run(temp_stack->runs,
 			pop_back_ft_deque_run(stack->runs));
 	i = 0;
-	while (i < runs_num)
-	{
-		run = pop_front_ft_deque_run(temp_stack->runs);
-		temp = run.len / 3;
-		push_back_ft_deque_run(stack->runs, (t_run){temp, run.ord});
-		push_back_ft_deque_run(temp_stack->runs, run);
-		++i;
-	}
-	while (i < runs_num * 3)
+	while (i < runs_num * 2)
 	{
 		run = pop_back_ft_deque_run(temp_stack->runs);
 		temp = run.len / 3;
 		push_back_ft_deque_run(stack->runs, (t_run){temp, run.ord ^ 1});
 		push_front_ft_deque_run(temp_stack->runs, run);
+		++i;
+	}
+	while (i < runs_num * 3)
+	{
+		run = pop_front_ft_deque_run(temp_stack->runs);
+		temp = run.len / 3;
+		push_back_ft_deque_run(stack->runs, (t_run){temp, run.ord});
+		push_back_ft_deque_run(temp_stack->runs, run);
 		++i;
 	}
 	while (ft_deque_run_len(temp_stack->runs) != 0)
