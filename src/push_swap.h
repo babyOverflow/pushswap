@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:39:15 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/21 15:42:16 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/21 16:08:11 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int						pop_front_ft_deque_int(t_deque_int *self);
 int						peek_back_ft_deque_int(t_deque_int *self);
 int						peek_front_ft_deque_int(t_deque_int *self);
 int						ft_deque_int_len(t_deque_int *self);
+void					delete_ft_deque_int(t_deque_int *self);
 
 t_deque_run				ft_deque_run_create(int size);
 void					push_back_ft_deque_run(t_deque_run *self, t_run x);
@@ -103,6 +104,7 @@ t_run					pop_front_ft_deque_run(t_deque_run *self);
 t_run					peek_back_ft_deque_run(t_deque_run *self);
 t_run					peek_front_ft_deque_run(t_deque_run *self);
 int						ft_deque_run_len(t_deque_run *self);
+void					delete_ft_deque_run(t_deque_run *self);
 
 void					sx(t_ps_stack *x_stack);
 void					px(t_ps_stack *stack_src, t_ps_stack *stack_dest);
