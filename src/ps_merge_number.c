@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:53:35 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/21 14:53:36 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/21 16:34:56 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ void	handle_pos_right_top(
 	t_merge_action_spec *spec
 )
 {
-	(void)l_stack;
 	if (spec->target_pos == R_STACK_REAR)
 		rx(r_stack);
 	else if (spec->target_pos == L_STACK_TOP)

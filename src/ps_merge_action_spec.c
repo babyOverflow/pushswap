@@ -1,81 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ps_merge_action_spec.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/21 16:13:04 by seonghyk          #+#    #+#             */
+/*   Updated: 2022/10/21 16:16:29 by seonghyk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
+#include "ps_merge_action_spec.h"
 
-void	psmaspec_register_left_top_as_candidates(
-	t_merge_action_spec *self,
-	t_ps_stack *l_stack
+int	_get_ps_status(
+	t_deque_run *a_run,
+	t_deque_run *b_run
 )
 {
-	self->candidates_pos |= L_STACK_TOP;
-	self->l_stack_top_candidate_num = 1;
-	if (l_stack != NULL)
-		self->l_stack_top_candidate_num
-			= peek_back_ft_deque_run(l_stack->runs).len;
+	int	status;
+
+	if (peek_back_ft_deque_run(a_run).ord == None)
+		return (EMPTY | AAAA);
+	if (peek_back_ft_deque_run(b_run).ord == None)
+		return (EMPTY | DDDA);
+	status = 0;
+	status |= peek_back_ft_deque_run(a_run).ord << 3;
+	status |= peek_back_ft_deque_run(b_run).ord << 2;
+	status |= peek_front_ft_deque_run(a_run).ord << 1;
+	status |= peek_front_ft_deque_run(b_run).ord << 0;
+	return (status);
 }
 
-void	psmaspec_register_right_top_as_candidates(
-	t_merge_action_spec *self,
+t_merge_action_spec	get_normal_phase_merge_action_spec(
+	t_ps_stack *l_stack,
 	t_ps_stack *r_stack
 )
 {
-	self->candidates_pos |= R_STACK_TOP;
-	self->r_stack_top_candidate_num = 1;
-	if (r_stack != NULL)
-		self->r_stack_top_candidate_num
-			= peek_back_ft_deque_run(r_stack->runs).len;
-}
+	t_merge_action_spec	ret;
+	int					state;
 
-void	psmaspec_register_left_rear_as_candidates(
-	t_merge_action_spec *self,
-	t_ps_stack *l_stack
-)
-{
-	self->candidates_pos |= L_STACK_REAR;
-	self->l_stack_rear_candidate_num = 1;
-	if (l_stack != NULL)
-		self->l_stack_rear_candidate_num
-			= peek_front_ft_deque_run(l_stack->runs).len;
-}
-
-void	psmaspec_register_right_rear_as_candidates(
-	t_merge_action_spec *self,
-	t_ps_stack *r_stack
-)
-{
-	self->r_stack_rear_candidate_num = 1;
-	self->candidates_pos |= R_STACK_REAR;
-	if (r_stack != NULL)
-		self->r_stack_rear_candidate_num
-			= peek_front_ft_deque_run(r_stack->runs).len;
-}
-
-int	psmaspec_has_left_top_candidates( t_merge_action_spec *self)
-{
-	if (self->candidates_pos & L_STACK_TOP)
-		if (self->l_stack_top_candidate_num > 0)
-			return (1);
-	return (0);
-}
-
-int	psmaspec_has_left_rear_candidates(t_merge_action_spec *self)
-{
-	if (self->candidates_pos & L_STACK_REAR)
-		if (self->l_stack_rear_candidate_num > 0)
-			return (1);
-	return (0);
-}
-
-int	psmaspec_has_right_top_candidates( t_merge_action_spec *self)
-{
-	if (self->candidates_pos & R_STACK_TOP)
-		if (self->r_stack_top_candidate_num > 0)
-			return (1);
-	return (0);
-}
-
-int	psmaspec_has_right_rear_candidates(t_merge_action_spec *self)
-{
-	if (self->candidates_pos & R_STACK_REAR)
-		if (self->r_stack_rear_candidate_num > 0)
-			return (1);
-	return (0);
+	state = _get_ps_status(l_stack->runs, r_stack->runs);
+	ret = (t_merge_action_spec){
+		0, R_STACK_REAR, None, 0, 0, 0, 0, 0
+	};
+	if (state == DAAA || state == DDAA)
+	{
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_right_rear_as_candidates(&ret, r_stack);
+		ret.target_ord = Ascending;
+		ret.target_pos = R_STACK_TOP;
+	}
+	else if (state == ADDD || state == AADD)
+	{
+		psmaspec_register_left_rear_as_candidates(&ret, l_stack);
+		psmaspec_register_left_top_as_candidates(&ret, l_stack);
+		psmaspec_register_right_rear_as_candidates(&ret, r_stack);
+		ret.target_ord = Descending;
+		ret.target_pos = R_STACK_TOP;
+	}
+	return (ret);
 }
