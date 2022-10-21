@@ -1,12 +1,21 @@
-#include <assert.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/21 14:48:20 by seonghyk          #+#    #+#             */
+/*   Updated: 2022/10/21 14:52:30 by seonghyk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <limits.h>
 #include <stdarg.h>
 
 #include "push_swap.h"
 #include "ps_merge_action_spec.h"
 #include "libft.h"
-#include <assert.h>
-
 
 int	get_ps_status(
 	t_deque_run *a_run,
@@ -27,16 +36,14 @@ int	get_ps_status(
 	return (status);
 }
 
-#define PS_STACK_STATUS_TOGGLE_MASK 0b111;
-
-t_merge_action_spec get_normal_phase_merge_action_spec(
+t_merge_action_spec	get_normal_phase_merge_action_spec(
 	t_ps_stack *l_stack,
 	t_ps_stack *r_stack
 )
 {
 	t_merge_action_spec	ret;
-	int			state;
-	
+	int					state;
+
 	state = get_ps_status(l_stack->runs, r_stack->runs);
 	ret = (t_merge_action_spec){
 		0, R_STACK_REAR, None, 0, 0, 0, 0, 0
@@ -48,7 +55,6 @@ t_merge_action_spec get_normal_phase_merge_action_spec(
 		psmaspec_register_right_rear_as_candidates(&ret, r_stack);
 		ret.target_ord = Ascending;
 		ret.target_pos = R_STACK_TOP;
-
 	}
 	else if (state == ADDD || state == AADD)
 	{
@@ -57,11 +63,6 @@ t_merge_action_spec get_normal_phase_merge_action_spec(
 		psmaspec_register_right_rear_as_candidates(&ret, r_stack);
 		ret.target_ord = Descending;
 		ret.target_pos = R_STACK_TOP;
-
-	}
-	else
-	{
-		assert(0);
 	}
 	return (ret);
 }
@@ -70,13 +71,14 @@ void	bubble_down(t_ps_stack *stack, int depth, enum e_order ord)
 {
 	int	top;
 	int	under_top;
+
 	if (depth <= 0)
 		return ;
 	top = pop_back_ft_deque_int(stack->nums);
 	under_top = peek_back_ft_deque_int(stack->nums);
 	push_back_ft_deque_int(stack->nums, top);
-	if ((ord == Ascending && top < under_top) ||
-		(ord == Descending && top > under_top))
+	if ((ord == Ascending && top < under_top)
+		|| (ord == Descending && top > under_top))
 		return ;
 	sx(stack);
 	if (depth - 1 <= 0)
@@ -92,12 +94,12 @@ void	push(
 	t_merge_action_spec *spec
 )
 {
-	int						i;
-	enum e_ps_prime_num_pos	prime_num_pos;
+	int							i;
+	enum e_ps_prime_num_pos		prime_num_pos;
 	const t_merge_action_spec	only_push = {
 		L_STACK_TOP, R_STACK_TOP,
 		peek_back_ft_deque_run(l_stack->runs).ord ^ 1,
-		peek_back_ft_deque_run(l_stack->runs).len, 1, 0, 0, 0, 
+		peek_back_ft_deque_run(l_stack->runs).len, 1, 0, 0, 0
 	};
 
 	i = -1;
@@ -115,7 +117,6 @@ void	push(
 			bubble_down(r_stack, i, spec->target_ord);
 	}
 }
-
 
 t_run	merge_run(
 	t_ps_stack *l_stack,
@@ -159,7 +160,7 @@ void	merge(
 	merge_number(l_stack, r_stack, spec, new_run.len);
 }
 
-void	push_swap(
+void	merge_and_push(
 	t_ps_stack *l_stack,
 	t_ps_stack *r_stack
 )
@@ -169,8 +170,7 @@ void	push_swap(
 	int					i;
 	const int			len = ft_deque_run_len(l_stack->runs);
 
-
-	if (ft_deque_run_len(l_stack->runs) <=  0)
+	if (ft_deque_run_len(l_stack->runs) <= 0)
 		return ;
 	i = 0;
 	while (i < len / 3)
@@ -185,7 +185,8 @@ void	push_swap(
 	while (i < len / 3)
 	{
 		spec = get_normal_phase_merge_action_spec(l_stack, r_stack);
-		merge(l_stack, r_stack, &spec);
+		tmp_run = merge_run(l_stack, r_stack, &spec);
+		merge_number(l_stack, r_stack, &spec, tmp_run.len);
 		++i;
 	}
 }

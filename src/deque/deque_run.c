@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deque_run.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/21 14:38:43 by seonghyk          #+#    #+#             */
+/*   Updated: 2022/10/21 15:43:05 by seonghyk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include "push_swap.h"
-
 
 t_run	pop_back_ft_deque_run(t_deque_run *self)
 {
@@ -18,6 +29,12 @@ t_run	pop_back_ft_deque_run(t_deque_run *self)
 	}
 	--self->top;
 	return (ret);
+}
+
+void	clear_ft_deque_run(t_deque_run *self)
+{
+	self->top = 0;
+	self->rear = 0;
 }
 
 t_run	pop_front_ft_deque_run(t_deque_run *self)
@@ -54,7 +71,7 @@ void	push_front_ft_deque_run(t_deque_run *self, t_run x)
 t_deque_run	ft_deque_run_create(int size)
 {
 	t_deque_run	self;
-	
+
 	self.deque = (t_run *)malloc(sizeof(t_run) * (size + 1));
 	if (self.deque == NULL)
 		exit(-1);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ps_merge_number.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/21 14:53:35 by seonghyk          #+#    #+#             */
+/*   Updated: 2022/10/21 14:53:36 by seonghyk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <limits.h>
 
 #include "push_swap.h"
@@ -179,6 +191,6 @@ void	merge_number(
 	else if (prime_num_pos == L_STACK_REAR)
 		handle_pos_left_rear(l_stack, r_stack, spec);
 	else
-	 	handle_pos_right_rear(l_stack, r_stack, spec);
+		handle_pos_right_rear(l_stack, r_stack, spec);
 	merge_number(l_stack, r_stack, spec, len - 1);
 }

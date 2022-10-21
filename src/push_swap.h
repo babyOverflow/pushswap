@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/21 14:39:15 by seonghyk          #+#    #+#             */
+/*   Updated: 2022/10/21 15:42:16 by seonghyk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
@@ -29,6 +41,7 @@ enum e_order {
 };
 
 # define REST_OF_R_REAR_MASK 0b0111
+
 enum e_ps_prime_num_pos {
 	L_STACK_TOP = 0b1,
 	R_STACK_TOP = 0b10,
@@ -72,63 +85,46 @@ typedef struct s_ps_stack {
 	char		*name;
 }	t_ps_stack;
 
+t_deque_int				ft_deque_int_create(int size);
+void					push_back_ft_deque_int(t_deque_int *self, int x);
+void					push_front_ft_deque_int(t_deque_int *self, int x);
+int						pop_back_ft_deque_int(t_deque_int *self);
+int						pop_front_ft_deque_int(t_deque_int *self);
+int						peek_back_ft_deque_int(t_deque_int *self);
+int						peek_front_ft_deque_int(t_deque_int *self);
+int						ft_deque_int_len(t_deque_int *self);
 
-t_deque_int	ft_deque_int_create(int size);
-void		push_back_ft_deque_int(t_deque_int *self, int x);
-void		push_front_ft_deque_int(t_deque_int *self, int x);
-int	pop_back_ft_deque_int(t_deque_int *self);
-int	pop_front_ft_deque_int(t_deque_int *self);
-int	peek_back_ft_deque_int(t_deque_int *self);
-int	peek_front_ft_deque_int(t_deque_int *self);
-int			ft_deque_int_len(t_deque_int *self);
+t_deque_run				ft_deque_run_create(int size);
+void					push_back_ft_deque_run(t_deque_run *self, t_run x);
+void					push_front_ft_deque_run(t_deque_run *self, t_run x);
+void					clear_ft_deque_run(t_deque_run *self);
+t_run					pop_back_ft_deque_run(t_deque_run *self);
+t_run					pop_front_ft_deque_run(t_deque_run *self);
+t_run					peek_back_ft_deque_run(t_deque_run *self);
+t_run					peek_front_ft_deque_run(t_deque_run *self);
+int						ft_deque_run_len(t_deque_run *self);
 
-t_deque_run	ft_deque_run_create(int size);
-void		push_back_ft_deque_run(t_deque_run *self, t_run x);
-void		push_front_ft_deque_run(t_deque_run *self, t_run x);
-t_run		pop_back_ft_deque_run(t_deque_run *self);
-t_run		pop_front_ft_deque_run(t_deque_run *self);
-t_run		peek_back_ft_deque_run(t_deque_run *self);
-t_run		peek_front_ft_deque_run(t_deque_run *self);
-int			ft_deque_run_len(t_deque_run *self);
+void					sx(t_ps_stack *x_stack);
+void					px(t_ps_stack *stack_src, t_ps_stack *stack_dest);
+void					rx(t_ps_stack *x_stack);
+void					rrx(t_ps_stack *x_stack);
 
-void	sx(t_ps_stack *x_stack);
-void	px(t_ps_stack *stack_src, t_ps_stack *stack_dest);
-void	rx(t_ps_stack *x_stack);
-void	rrx(t_ps_stack *x_stack);
+void					merge_and_push(
+							t_ps_stack *l_stack,
+							t_ps_stack *r_stack);
 
-void	push_swap(
-	t_ps_stack *l_stack,
-	t_ps_stack *r_stack
-);
-
-void	merge(
-	t_ps_stack *l_stack,
-	t_ps_stack *r_stack,
-	t_merge_action_spec	*spec
-);
-
-void	merge_final(
-	t_ps_stack *l_stack,
-	t_ps_stack *r_stack,
-	int len
-);
-
-void	merge_number(
-	t_ps_stack *l_stack,
-	t_ps_stack *r_stack,
-	t_merge_action_spec *spec,
-	int len
-);
-
+void					merge_number(
+							t_ps_stack *l_stack,
+							t_ps_stack *r_stack,
+							t_merge_action_spec *spec,
+							int len);
 enum e_ps_prime_num_pos	get_prime_num_pos(
-	t_ps_stack *l_stack,
-	t_ps_stack *r_stack,
-	t_merge_action_spec *spec
-);
+							t_ps_stack *l_stack,
+							t_ps_stack *r_stack,
+							t_merge_action_spec *spec);
 
-void	push(
-	t_ps_stack *l_stack,
-	t_ps_stack *r_stack,
-	t_merge_action_spec *spec
-);
+void					push(
+							t_ps_stack *l_stack,
+							t_ps_stack *r_stack,
+							t_merge_action_spec *spec);
 #endif
