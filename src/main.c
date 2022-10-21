@@ -15,31 +15,6 @@ void	nums_to_int_stack(
 		push_back_ft_deque_int(stack->nums, nums->arr[i]);
 }
 
-enum e_order	determin(len, i, order)
-{
-	int numerator;
-
-	numerator = len / 3;
-	if (numerator < 3)
-	{
-		if (i == 0)
-			return order ^ order;
-		else if ( i == 1)
-			return order ^ 1;
-		else
-		 	return order ^ order ^ 1;
-	}
-	if (numerator > i)
-		return determin(numerator, i, order ^ order);
-	else if (2 * numerator > i)
-		return determin(numerator, i - numerator, order ^ 1);
-	else if (3 * numerator > i)
-		return determin(len - (2 * numerator), i - numerator * 2, order ^ order ^ 1);
-	else
-	 	return determin(len - (3 * numerator), i - numerator * 3, order);
-}
-
-
 int	recur(t_ps_stack *stack, t_ps_stack *temp_stack, int run_size)
 {
 	const int	runs_num = ft_deque_run_len(stack->runs);
@@ -151,8 +126,20 @@ int	main(int ac, char *av[])
 		if (ft_deque_run_len(b_stack.runs) <= 1)
 			break ;
 	}
+	t_merge_action_spec	reversed_push = {
+		L_STACK_TOP, R_STACK_TOP, Descending, 0,
+		0, 0, 0, 0
+	};
+	psmaspec_register_left_top_as_candidates(&reversed_push, &b_stack);
+	if (ft_deque_run_len(b_stack.runs) >= 1)
+		while (ft_deque_int_len(b_stack.nums) != 0)
+		{
+			rrx(&b_stack);
+			px(&b_stack, &a_stack);
+		}
 	n = 1;
 	i = -1;
+		printf("B\n");
 	while (++i < numbers.len && n != 0)
 	{
 		n = pop_front_ft_deque_int(&b_nums);
@@ -161,6 +148,7 @@ int	main(int ac, char *av[])
 
 	n = 1;
 	i = -1;
+		printf("A\n");
 	while (++i < numbers.len && n != 0)
 	{
 		n = pop_front_ft_deque_int(&a_nums);

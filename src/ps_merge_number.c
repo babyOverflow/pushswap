@@ -25,10 +25,11 @@ enum e_ps_prime_num_pos	ps_min_num_pos(
 	if (psmaspec_has_right_rear_candidates(spec))
 		if (peek_front_ft_deque_int(r_stack) < num_min)
 			return (R_STACK_REAR);
-	ret = L_STACK_TOP;
-	if (num_min == r_top)
+	if (num_min == l_top && psmaspec_has_left_top_candidates(spec))
+		ret = L_STACK_TOP;
+	else if (num_min == r_top && psmaspec_has_right_rear_candidates(spec))
 		ret = R_STACK_TOP;
-	else if (num_min == l_rear)
+	else
 		ret = L_STACK_REAR;
 	return (ret);
 }
@@ -55,9 +56,9 @@ enum e_ps_prime_num_pos	ps_max_num_pos(
 	if (psmaspec_has_right_rear_candidates(spec))
 		if (peek_front_ft_deque_int(r_stack) > num_max)
 			return (R_STACK_REAR);
-	if (num_max == l_top)
+	if (num_max == l_top && psmaspec_has_left_top_candidates(spec))
 		ret = L_STACK_TOP;
-	else if (num_max == r_top)
+	else if (num_max == r_top && psmaspec_has_right_top_candidates(spec))
 		ret = R_STACK_TOP;
 	else
 		ret = L_STACK_REAR;
