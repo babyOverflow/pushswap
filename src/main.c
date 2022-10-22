@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 15:51:13 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/22 18:31:51 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/22 21:35:53 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	main(int ac, char *av[])
 	b_nums = ft_deque_int_create(numbers.len);
 	a_runs = ft_deque_run_create(numbers.len);
 	b_runs = ft_deque_run_create(numbers.len);
-	if (ft_deque_int_len(&a_nums) > 6)
+	if (ft_deque_int_len(&a_nums) > 5)
 		push_swap(&(t_ps_stack){&a_nums, &a_runs, "a"},
 			&(t_ps_stack){&b_nums, &b_runs, "b"});
 	else
