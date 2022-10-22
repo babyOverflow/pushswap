@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:39:15 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/22 14:08:47 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/22 16:32:22 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,4 +131,5 @@ void					push(
 							t_ps_stack *l_stack,
 							t_ps_stack *r_stack,
 							t_merge_action_spec *spec);
+void	push_swap_short(t_deque_int *a_nums, t_deque_int *b_nums);
 #endif
