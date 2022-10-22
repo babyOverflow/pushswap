@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:30:57 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/21 16:30:58 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/22 14:37:53 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static int	_ft_assign_num(int *numbers, int num_idx, char *strs[])
 		if (is_valid_num(strs[i]))
 		{
 			numbers[num_idx] = ft_atoi(strs[i]);
-			j = i;
+			j = num_idx + i;
 			while (--j >= 0)
-				if (numbers[j] == numbers[i])
+				if (numbers[j] == numbers[num_idx + i])
 					return (-1);
 		}
 		else

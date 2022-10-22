@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:39:15 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/21 16:08:11 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/22 14:08:47 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PUSH_SWAP_H
 
 # include <stdlib.h>
+# include "parse.h"
 
 # define AAAA 0b0000
 # define AADA 0b0010
@@ -86,6 +87,7 @@ typedef struct s_ps_stack {
 }	t_ps_stack;
 
 t_deque_int				ft_deque_int_create(int size);
+t_deque_int				ft_deque_int_from( const int *arr, int size);
 void					push_back_ft_deque_int(t_deque_int *self, int x);
 void					push_front_ft_deque_int(t_deque_int *self, int x);
 int						pop_back_ft_deque_int(t_deque_int *self);

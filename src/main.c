@@ -6,26 +6,14 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 15:51:13 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/21 15:51:17 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/22 14:23:35 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "push_swap.h"
 #include "ps_merge_action_spec.h"
-#include <stdio.h>
-
-void	nums_to_int_stack(
-	const t_parsed_num *nums,
-	t_deque_int *stack
-)
-{
-	int		i;
-
-	i = nums->len;
-	while (--i >= 0)
-		push_back_ft_deque_int(stack, nums->arr[i]);
-}
+#include "libft.h"
 
 int	recur(t_deque_run *runs, t_deque_run *tmp_runs, int run_size)
 {
@@ -133,14 +121,16 @@ int	main(int ac, char *av[])
 	t_deque_run		a_runs;
 	t_deque_run		b_runs;
 
-	if (ac < 1)
-		return (0);
+	if (ac < 2)
+	{
+		ft_printf("Error\n");
+		exit(-1);
+	}
 	numbers = ps_parse(ac, av);
-	a_nums = ft_deque_int_create(numbers.len);
+	a_nums = ft_deque_int_from(numbers.arr, numbers.len);
 	b_nums = ft_deque_int_create(numbers.len);
 	a_runs = ft_deque_run_create(numbers.len);
 	b_runs = ft_deque_run_create(numbers.len);
-	nums_to_int_stack(&numbers, &a_nums);
 	push_swap(
 		&(t_ps_stack){&a_nums, &a_runs, "a"},
 		&(t_ps_stack){&b_nums, &b_runs, "b"});
