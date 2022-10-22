@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:48:20 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/22 16:23:38 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/22 18:25:49 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,27 +128,3 @@ void	merge_and_push(
 		++i;
 	}
 }
-
-void	push_swap(t_ps_stack *a_stack, t_ps_stack *b_stack)
-{
-	calcualate_runs(a_stack, b_stack);
-	push_by_runs_ord(a_stack, b_stack);
-	while (1)
-	{
-		merge_and_push(b_stack, a_stack);
-		if (ft_deque_run_len(a_stack->runs) <= 1)
-			break ;
-		merge_and_push(a_stack, b_stack);
-		if (ft_deque_run_len(b_stack->runs) <= 1)
-			break ;
-	}
-	if (ft_deque_run_len(b_stack->runs) >= 1)
-	{
-		while (ft_deque_int_len(b_stack->nums) != 0)
-		{
-			rrx(b_stack);
-			px(b_stack, a_stack);
-		}
-	}
-}
-

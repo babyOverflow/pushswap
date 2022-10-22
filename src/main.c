@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 15:51:13 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/22 16:34:37 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/22 18:31:51 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,7 @@ int	main(int ac, char *av[])
 	t_deque_run		b_runs;
 
 	if (ac < 2)
-	{
-		ft_printf("Error\n");
-		exit(-1);
-	}
+		exit_invalid_input(-1);
 	numbers = ps_parse(ac, av);
 	a_nums = ft_deque_int_from(numbers.arr, numbers.len);
 	b_nums = ft_deque_int_create(numbers.len);
@@ -135,7 +132,8 @@ int	main(int ac, char *av[])
 		push_swap(&(t_ps_stack){&a_nums, &a_runs, "a"},
 			&(t_ps_stack){&b_nums, &b_runs, "b"});
 	else
-		push_swap_short(&a_nums, &b_nums);
+		push_swap_short(&(t_ps_stack){&a_nums, &a_runs, "a"},
+			&(t_ps_stack){&b_nums, &b_runs, "b"});
 	delete_ft_deque_int(&a_nums);
 	delete_ft_deque_int(&b_nums);
 	delete_ft_deque_run(&a_runs);

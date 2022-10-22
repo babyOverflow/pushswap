@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 13:46:33 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/22 13:47:32 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/22 19:11:57 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ enum e_ps_prime_num_pos	ps_min_num_pos(
 			return (R_STACK_REAR);
 	if (num_min == l_top && psmaspec_has_left_top_candidates(spec))
 		ret = L_STACK_TOP;
-	else if (num_min == r_top && psmaspec_has_right_rear_candidates(spec))
+	else if (num_min == r_top && psmaspec_has_right_top_candidates(spec))
 		ret = R_STACK_TOP;
 	else
 		ret = L_STACK_REAR;

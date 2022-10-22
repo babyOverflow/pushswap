@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:30:57 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/22 14:43:08 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/22 18:30:45 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,6 @@ t_parsed_num	ps_parse(int ac, char *av[])
 	while (++i < ac && num_idx != -1)
 		num_idx = _ft_assign_num(numbers, num_idx, temp[i]);
 	if (num_idx == -1)
-	{
-		ft_printf("Error\n");
-		exit(-1);
-	}
+		exit_invalid_input(-1);
 	return ((t_parsed_num){ret, numbers});
 }
