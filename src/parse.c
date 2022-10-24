@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:30:57 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/22 18:30:45 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/24 09:58:36 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,26 +72,29 @@ static int	_ft_assign_num(int *numbers, int num_idx, char *strs[])
 
 t_parsed_num	ps_parse(int ac, char *av[])
 {
-	int		ret;
 	int		i;
 	char	***temp;
 	int		*numbers;
 	int		num_idx;
 
-	ret = 0;
+	num_idx = 0;
 	i = 0;
 	temp = malloc(sizeof(char **) * ac);
 	while (++i < ac)
 	{
 		temp[i] = ft_split(av[i], ' ');
-		ret += _ft_strvlen(temp[i]);
+		num_idx += _ft_strvlen(temp[i]);
 	}
-	numbers = malloc(sizeof(int) * (ret + 1));
+	numbers = malloc(sizeof(int) * (num_idx + 1));
 	num_idx = 0;
 	i = 0;
 	while (++i < ac && num_idx != -1)
 		num_idx = _ft_assign_num(numbers, num_idx, temp[i]);
 	if (num_idx == -1)
 		exit_invalid_input(-1);
-	return ((t_parsed_num){ret, numbers});
+	i = 0;
+	while (++i < ac)
+		free(temp[i]);
+	free(temp);
+	return ((t_parsed_num){num_idx, numbers});
 }

@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 15:51:13 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/22 21:35:53 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/24 09:58:37 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,5 @@ int	main(int ac, char *av[])
 	delete_ft_deque_int(&b_nums);
 	delete_ft_deque_run(&a_runs);
 	delete_ft_deque_run(&b_runs);
+	free(numbers.arr);
 }
