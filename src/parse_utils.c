@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:09:46 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/24 13:41:30 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:58:36 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,23 @@ void	exit_invalid_input(int error_code)
 {
 	ft_printf("Error\n");
 	exit(error_code);
+}
+
+void	delete_words_of_numbers(char ***temp, int len)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (++i < len)
+	{
+		j = 0;
+		while (temp[i][j] != 0)
+		{
+			free(temp[i][j]);
+			j++;
+		}
+		free(temp[i]);
+	}
+	free(temp);
 }

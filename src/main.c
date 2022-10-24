@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 15:51:13 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/24 13:41:34 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:57:18 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	main(int ac, char *av[])
 	t_deque_run		b_runs;
 
 	if (ac < 2)
-		exit_invalid_input(-1);
+		return (0);
 	numbers = ps_parse(ac, av);
 	a_nums = ft_deque_int_from(numbers.arr, numbers.len);
 	b_nums = ft_deque_int_create(numbers.len);
