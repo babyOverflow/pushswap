@@ -25,8 +25,11 @@ CPPFLAGS := $(addprefix -I,$(INCS))
 LDFLAGS := $(addprefix -L,$(dir $(LIBS_TARGET)))
 LDLIBS := $(addprefix -l,$(LIBS))
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(LIBS_TARGET)
 	$(CC) $(OBJ) -o $(NAME) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
+
+$(LIBS_TARGET):
+	$(MAKE) -C $(@D)
 
 # unit_test: $(OBJ)
 # 	$(CC) $(CFLAGS) test/test_deque.c $(OBJ)
