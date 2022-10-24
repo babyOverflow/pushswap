@@ -1,0 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print_format_hex.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seonghyk <seonghyk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/29 16:50:08 by seonghyk          #+#    #+#             */
+/*   Updated: 2022/06/11 13:47:39 by seonghyk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_printf.h"
+#include "libft.h"
+
+t_Prefix	get_hex_prefix(t_Format *format)
+{
+	if (format->type_c == 'p')
+		return ((t_Prefix){2, "0x"});
+	if (format->value.as_int == 0)
+		return ((t_Prefix){0, NULL});
+	if (format->type_c == 'x' && format->flags & FMT_ALTER_FORM)
+		return ((t_Prefix){2, "0x"});
+	if (format->type_c == 'X' && format->flags & FMT_ALTER_FORM)
+		return ((t_Prefix){2, "0X"});
+	return ((t_Prefix){0, NULL});
+}
+
+int	print_format_hex(int fd, t_Format *format)
+{
+	t_Prefix		prefix;
+	char			buf[60];
+	int				len_arg;
+	int				ret;
+
+	if (format->type_c == 'x')
+		len_arg = hexadecimal_to_string(format->value.as_uint, buf, 0);
+	else if (format->type_c == 'X')
+		len_arg = hexadecimal_to_string(format->value.as_uint, buf, 1);
+	else if (format->type_c == 'p')
+		len_arg = hexadecimal_to_string(format->value.as_ulong, buf, 0);
+	else
+		return (0);
+	prefix = get_hex_prefix(format);
+	ret = 0;
+	ret += write(fd, prefix.str, prefix.len);
+	if (!(format->value.as_int == 0 && format->precision == 0))
+		ret += write(fd, buf, len_arg);
+	return (ret);
+}
