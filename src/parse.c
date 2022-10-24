@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:30:57 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/24 09:58:36 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:39:58 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,25 @@ static int	_ft_assign_num(int *numbers, int num_idx, char *strs[])
 	return (num_idx);
 }
 
+void	delete_words_of_numbers(char ***temp, int len)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (++i < len)
+	{
+		j = 0;
+		while (temp[i][j] != 0)
+		{
+			free(temp[i][j]);
+			j++;
+		}
+		free(temp[i]);
+	}
+	free(temp);
+}
+
 t_parsed_num	ps_parse(int ac, char *av[])
 {
 	int		i;
@@ -90,11 +109,9 @@ t_parsed_num	ps_parse(int ac, char *av[])
 	i = 0;
 	while (++i < ac && num_idx != -1)
 		num_idx = _ft_assign_num(numbers, num_idx, temp[i]);
+	delete_words_of_numbers(temp, ac);
 	if (num_idx == -1)
 		exit_invalid_input(-1);
-	i = 0;
-	while (++i < ac)
-		free(temp[i]);
-	free(temp);
+	i = -1;
 	return ((t_parsed_num){num_idx, numbers});
 }
