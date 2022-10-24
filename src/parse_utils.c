@@ -6,7 +6,7 @@
 /*   By: seonghyk <seonghyk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 16:09:46 by seonghyk          #+#    #+#             */
-/*   Updated: 2022/10/22 18:29:30 by seonghyk         ###   ########.fr       */
+/*   Updated: 2022/10/24 10:15:46 by seonghyk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ long	ft_atoi_l(const char *str)
 
 void	exit_invalid_input(int error_code)
 {
-	ft_printf("Error");
+	ft_printf("Error\n");
 	exit(error_code);
 }
